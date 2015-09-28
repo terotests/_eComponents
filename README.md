@@ -64,13 +64,13 @@ _eComponents();
 The class has following internal singleton variables:
         
         
-### <a name="_eComponents_bsComps"></a>_eComponents::bsComps(scope)
+### <a name="_eComponents_bsComps"></a>_eComponents::bsComps(body)
 
 
 *The source code for the function*:
 ```javascript
 
-var create_btn = function(scope, type) {
+var create_bs_btn = function(scope, type) {
   scope.customElement("btn-"+type, {
     data: {
       text: "Button text"
@@ -85,10 +85,10 @@ var create_btn = function(scope, type) {
   })    
 }
 
-create_btn( scope, "primary");
-create_btn( scope, "danger");
-create_btn( scope, "warning");
-create_btn( scope, "default");
+create_bs_btn( body, "primary");
+create_bs_btn( body, "danger");
+create_bs_btn( body, "warning");
+create_bs_btn( body, "default");
 ```
 
 ### _eComponents::constructor( options )

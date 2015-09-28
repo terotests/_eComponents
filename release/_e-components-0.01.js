@@ -14,11 +14,11 @@
       // Initialize static variables here...
 
       /**
-       * @param Object scope
+       * @param Object body
        */
-      _myTrait_.bsComps = function (scope) {
+      _myTrait_.bsComps = function (body) {
 
-        var create_btn = function create_btn(scope, type) {
+        var create_bs_btn = function create_bs_btn(scope, type) {
           scope.customElement("btn-" + type, {
             data: {
               text: "Button text"
@@ -32,10 +32,10 @@
           });
         };
 
-        create_btn(scope, "primary");
-        create_btn(scope, "danger");
-        create_btn(scope, "warning");
-        create_btn(scope, "default");
+        create_bs_btn(body, "primary");
+        create_bs_btn(body, "danger");
+        create_bs_btn(body, "warning");
+        create_bs_btn(body, "default");
       };
 
       if (_myTrait_.__traitInit && !_myTrait_.hasOwnProperty("__traitInit")) _myTrait_.__traitInit = _myTrait_.__traitInit.slice();
