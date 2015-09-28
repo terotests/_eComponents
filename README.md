@@ -220,12 +220,16 @@ var paper_circle = function(scope, name, size, baseColor, duration) {
         }
       );
     },
-    init: function() {
+    init: function(options) {
       var container = _e("div");
       container.relative();
       this.prepend(container);
       var rel = container.div().absolute();
       var m = this.mousePos();
+      if(options && options.get("x")) {
+          m.x = m.x || options.get("x");
+          m.y = m.y || options.get("y");
+      }
       rel.x(m.x).y(m.y);
       rel.div("circle");
       rel.addClass("animate");
