@@ -81,7 +81,7 @@ var create_btn = function(scope, type) {
       this.addClass("btn btn-"+type);
       this.span().bind(data, "text");
     },
-    tagName: "div"
+    tagName: "button"
   })    
 }
 
