@@ -320,6 +320,17 @@
   };
   _eComponents.prototype = new _eComponents_prototype();
 
+  (function () {
+    if (typeof define !== "undefined" && define !== null && define.amd != null) {
+      __amdDefs__["_eComponents"] = _eComponents;
+      this._eComponents = _eComponents;
+    } else if (typeof module !== "undefined" && module !== null && module.exports != null) {
+      module.exports["_eComponents"] = _eComponents;
+    } else {
+      this._eComponents = _eComponents;
+    }
+  }).call(new Function("return this")());
+
   if (typeof define !== "undefined" && define !== null && define.amd != null) {
     define(__amdDefs__);
   }
