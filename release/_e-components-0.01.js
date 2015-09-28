@@ -49,7 +49,7 @@
           this.materialComps(options.root || body);
         }
         if (options.bootstrap) {
-          this.bcComps(options.root || body);
+          this.bsComps(options.root || body);
         }
       });
 

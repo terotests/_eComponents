@@ -43,6 +43,7 @@ _eComponents();
 #### Class _eComponents
 
 
+- [bsComps](README.md#_eComponents_bsComps)
 - [materialComps](README.md#_eComponents_materialComps)
 
 
@@ -63,12 +64,46 @@ _eComponents();
 The class has following internal singleton variables:
         
         
+### <a name="_eComponents_bsComps"></a>_eComponents::bsComps(scope)
+
+
+*The source code for the function*:
+```javascript
+
+var create_btn = function(scope, type) {
+  scope.customElement("btn-"+type, {
+    data: {
+      text: "Button text"
+    },
+    css: function(myCss) {
+    },
+    init: function(data, createOptions) {
+      this.addClass("btn btn-"+type);
+      this.span().bind(data, "text");
+    },
+    tagName: "div"
+  })    
+}
+
+create_btn( scope, "primary");
+create_btn( scope, "danger");
+create_btn( scope, "warning");
+create_btn( scope, "default");
+```
+
 ### _eComponents::constructor( options )
 
 ```javascript
 var body = _e(document.body);
 
-this.materialComps(body);
+options = options || {};
+
+if(options.material) {
+    this.materialComps(options.root || body);
+}
+if(options.bootstrap) {
+    this.bsComps(options.root || body);
+}
 ```
         
 ### <a name="_eComponents_materialComps"></a>_eComponents::materialComps(body)
