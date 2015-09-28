@@ -2,6 +2,10 @@
 
 Includes tests about Material design components etc.
 
+Usage examples : 
+http://codepen.io/teroktolonen/full/pjNzMx
+
+
 ```
 _eComponents();
 ```
