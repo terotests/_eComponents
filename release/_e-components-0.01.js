@@ -387,12 +387,15 @@
               myCss.bind(".btn-content:hover", {
                 "background": _e().dim(_e().mix(color, "#4a89dc"), 0.1)
               });
-              myCss.animation("tryMe", {
-                duration: "4s",
+              myCss.animation("fadeOut", {
+                duration: "1s",
                 "iteration-count": 1 }, {
-                transform: "rotate(0deg)"
+                transform: "scale(1)"
               }, {
-                transform: "rotate(360deg)"
+                transform: "scale(0)"
+              });
+              myCss.bind(".out", {
+                "display": "none"
               });
             },
             init: function init(data, createOptions) {
@@ -401,7 +404,10 @@
               this.e("paper-circle");
               var me = this;
               setTimeout(function () {
-                me.remove();
+                me.addClass("fadeOut").addClass("out");
+                setTimeout(function () {
+                  me.remove();
+                }, 800);
               }, 5000);
             },
             tagName: "div"
@@ -536,10 +542,10 @@
                 text: [data, "send_title"]
               }).on("click", function () {
                 if (!validateEmail(data.get("from"))) {
+                  alert.clear();
                   alert.e("alert-info", {
                     text: data.get("please_fill_email")
                   });
-
                   return;
                 }
                 this.send("support-question", data.toPlainData(), function () {});
