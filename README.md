@@ -431,6 +431,7 @@ var create_btn = function(scope, name, color, borderRadius) {
     tagName: "div"
   })
 }
+create_btn(body, "paper-button", "gray", "0px");
 create_btn(body, "pri-button", "gray", "0px");
 create_btn(body, "danger-button", "red", "0px");
 create_btn(body, "warning-button", "yellow", "0px");
@@ -490,7 +491,45 @@ var paper_heading = function(scope, name, size, baseColor) {
   // create component for paper -like h1 
 paper_heading(body, "paper-h1", "2em", "#333");
 paper_heading(body, "paper-h2", "1.5em", "#666");
+paper_heading(body, "paper-h3", "1.5em", "#666");
 
+var send_email_comp = function(scope, name, size, baseColor) {
+    scope.customElement(name, {
+      // The data-model for the component
+      data: {
+        to_title : "Vastaanottaja(t)",
+        to: "",          
+        head_title : "Sähköpostin otsikko",
+        heading: "The e-mail heading",
+        content_title : "Sisältö",
+        content: "",        
+        text : "The contents of the email",
+        send_title : "Lähetä"
+      },
+      css: function(myCss) {
+
+      },
+      init: function(data) {
+        this.e("paper-input", {
+            title : [data, "to_title"], 
+            value : [data, "to"] });          
+        this.e("paper-input", {
+            title : [data, "head_title"], 
+            value : [data, "heading"] });
+        this.e("paper-textarea", {
+            title : [data, "content_title"], 
+            value : [data, "content"] });            
+        this.e("paper-button", {
+            text : [data, "send_title"] }).on("click", function() {
+                this.send("send-email", data.toPlainData(), function() {
+                    // any controller preferences? 
+                });
+            });           
+      },
+      tagName: "div"
+    });
+  }
+send_email_comp( body, "send-email");
 ```
 
 
