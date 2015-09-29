@@ -332,6 +332,7 @@
             tagName: "div"
           });
         };
+        create_btn(body, "paper-button", "gray", "0px");
         create_btn(body, "pri-button", "gray", "0px");
         create_btn(body, "danger-button", "red", "0px");
         create_btn(body, "warning-button", "yellow", "0px");
@@ -390,6 +391,37 @@
         // create component for paper -like h1
         paper_heading(body, "paper-h1", "2em", "#333");
         paper_heading(body, "paper-h2", "1.5em", "#666");
+        paper_heading(body, "paper-h3", "1.5em", "#666");
+
+        var send_email_comp = function send_email_comp(scope, name, size, baseColor) {
+          scope.customElement(name, {
+            // The data-model for the component
+            data: {
+              head_title: "Sähköpostin otsikko",
+              heading: "The e-mail heading",
+              text: "The contents of the email",
+              send_title: "Lähetä"
+            },
+            css: function css(myCss) {},
+            init: function init(data) {
+              this.e("paper-input", {
+                title: [data, "head_title"],
+                value: [data, "heading"]
+              });
+              this.e("paper-textarea", {
+                title: [data, "head_title"],
+                value: [data, "heading"]
+              });
+              this.e("paper-button", {
+                text: [data, "send_title"]
+              }).on("click", function () {
+                this.send("send-email", data.toPlainData(), function () {});
+              });
+            },
+            tagName: "div"
+          });
+        };
+        send_email_comp(body, "send-email");
       };
     })(this);
   };
@@ -443,3 +475,5 @@
 
 //var o = this.buttonGroup(item.buttongroup);
 //myLi.add(o);
+
+// any controller preferences?
