@@ -218,6 +218,7 @@
                 input.attr("type", data.get("type"));
                 if (data.get("type") == "email") {
                   input.attr("pattern", "/^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:.[a-zA-Z0-9-]+)*$/");
+                  input.attr("type", "text");
                 }
               }
               if (data.get("required")) {
