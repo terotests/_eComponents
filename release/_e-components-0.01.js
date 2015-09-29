@@ -370,7 +370,7 @@
             },
             css: function css(myCss) {
               var btnShadow = "0 3px 10px rgba(0, 0, 0, 0.34)";
-              var myColor = _e().mix("#4a89dc", color);
+              var myColor = _e().mix("#4a89dc", color, 0.3);
               myCss.bind(".btn-content", {
                 "display": "block",
                 "padding": "0.4em 0.8em",
@@ -407,7 +407,7 @@
           });
         };
 
-        alert_info(body, "alert-info", "blue");
+        alert_info(body, "alert-info", "#4a89dc");
 
         var paper_heading = function paper_heading(scope, name, size, baseColor) {
           scope.customElement(name, {
