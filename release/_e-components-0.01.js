@@ -375,13 +375,14 @@
                 "display": "block",
                 "padding": "0.4em 0.8em",
                 "position": "relative",
-                "margin": "0.3em",
+                "margin-top": "0.3em",
+                "margin-bottom": "0.3em",
                 "overflow": "hidden",
                 "cursor": "pointer",
                 "color": "#fff",
                 "border-radius": "4px",
                 "background-color": myColor,
-                "inner-shadow": btnShadow
+                "box-shadow": btnShadow
               });
               myCss.bind(".btn-content:hover", {
                 "background": _e().dim(_e().mix(color, "#4a89dc"), 0.1)
