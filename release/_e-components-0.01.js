@@ -217,7 +217,12 @@
               if (data.get("type")) {
                 input.attr("type", data.get("type"));
               }
-
+              if (data.get("required")) {
+                input.attr("required", true);
+              }
+              if (data.get("placeholder")) {
+                input.attr("placeholder", data.get("placeholder"));
+              }
               input.bind(data, "value");
               input.on("focus", function () {
                 box.removeClass("input-bar-close");
