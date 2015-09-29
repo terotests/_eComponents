@@ -401,7 +401,7 @@
               to: "",
               head_title: "Sähköpostin otsikko",
               heading: "The e-mail heading",
-              content_title: "Sähköpostin otsikko",
+              content_title: "Sisältö",
               content: "",
               text: "The contents of the email",
               send_title: "Lähetä"
