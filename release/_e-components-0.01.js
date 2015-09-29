@@ -474,7 +474,7 @@
                 "padding": "0.6em",
                 "color": "#333",
                 "border-radius": "4px",
-                "background-color": _e().mix("orange", "gray")
+                "background-color": "#eee"
               });
             },
             init: function init(data) {
