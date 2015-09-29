@@ -240,6 +240,9 @@
               if (data.get("placeholder")) {
                 input.attr("placeholder", data.get("placeholder"));
               }
+              if (data.get("height")) {
+                input.height(data.get("height"));
+              }
               input.bind(data, "value");
               input.on("focus", function () {
                 box.removeClass("input-bar-close");
