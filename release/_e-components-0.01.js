@@ -370,7 +370,7 @@
             },
             css: function css(myCss) {
               var btnShadow = "0 3px 10px rgba(0, 0, 0, 0.34)";
-              var myColor = _e().dim(color, 0.3);
+              var myColor = _e().dim(color, 0.1);
               myCss.bind(".btn-content", {
                 "display": "block",
                 "padding": "0.4em 0.8em",
@@ -387,6 +387,13 @@
               myCss.bind(".btn-content:hover", {
                 "background": _e().dim(_e().mix(color, "#4a89dc"), 0.1)
               });
+              myCss.animation("enter", {
+                duration: "0.3s",
+                "iteration-count": 1 }, {
+                transform: "scale(0)"
+              }, {
+                transform: "scale(1)"
+              });
               myCss.animation("fadeOut", {
                 duration: "0.5s",
                 "iteration-count": 1 }, {
@@ -399,15 +406,15 @@
               });
             },
             init: function init(data, createOptions) {
+              this.addClass("enter");
               this.addClass("btn-content");
               this.span().bind(data, "text");
-              this.e("paper-circle");
               var me = this;
               setTimeout(function () {
                 me.addClass("fadeOut");
                 setTimeout(function () {
                   me.remove();
-                }, 800);
+                }, 400);
               }, 5000);
             },
             tagName: "div"
@@ -522,7 +529,11 @@
               text: "The contents of the email",
               send_title: "Lähetä"
             },
-            css: function css(myCss) {},
+            css: function css(myCss) {
+              myCss.bind(".alert-area", {
+                "height": "40px"
+              });
+            },
             init: function init(data) {
 
               var alert = this.div("alert-area");
