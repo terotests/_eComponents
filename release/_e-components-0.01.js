@@ -260,7 +260,7 @@
           });
         };
         paper_input(body, "paper-input", "#4a89dc");
-        paper_input(body, "paper-textarea", "red", "#4a89dc");
+        paper_input(body, "paper-textarea", "#4a89dc", "textarea");
 
         // material design circle effect component, which removes itself automatically
         var paper_circle = function paper_circle(scope, name, size, baseColor, duration) {
