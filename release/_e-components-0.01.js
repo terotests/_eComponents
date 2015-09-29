@@ -496,7 +496,7 @@
               this.e("paper-button", {
                 text: [data, "send_title"]
               }).on("click", function () {
-                if (data.from().length == 0) {
+                if (!validateEmail(data.get("from"))) {
                   alert.show();
                   alert.text(data.get("please_fill_email"));
                   return;
