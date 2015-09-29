@@ -545,8 +545,8 @@
               if (data_id) {
                 var qList = _data(data_id);
 
-                this.ul("list-group").mvc(qList.items, function (item) {
-                  var li = _e("li").addClass("list-group-item");
+                this.div("faq-items").mvc(qList.items, function (item) {
+                  var li = _e("div").addClass("faq-item");
                   var info = _e();
                   li.e("paper-h2", {
                     text: item.heading()
@@ -610,6 +610,15 @@
                 }
                 this.send("support-question", data.toPlainData(), function () {});
               });
+
+              if (data.get("faqid")) {
+                this.e("paper-h1", {
+                  text: "Usein kysyttyjä kysymyksiä"
+                });
+                this.e("faq-list", {
+                  dataid: data.get("faqid")
+                });
+              }
             },
             tagName: "form"
           });
