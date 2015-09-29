@@ -216,6 +216,9 @@
 
               if (data.get("type")) {
                 input.attr("type", data.get("type"));
+                if (data.get("type") == "email") {
+                  input.attr("pattern", "/^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:.[a-zA-Z0-9-]+)*$/");
+                }
               }
               if (data.get("required")) {
                 input.attr("required", true);
