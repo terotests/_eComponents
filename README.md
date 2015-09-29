@@ -11,6 +11,9 @@ http://codepen.io/teroktolonen/full/VvPYPQ
 Random comps:
 http://codepen.io/teroktolonen/full/MaJWqM
 
+Testing component contents:
+http://codepen.io/teroktolonen/full/JYEXaz
+
 
 
 ```javascript
