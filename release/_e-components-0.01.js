@@ -404,7 +404,7 @@
               this.e("paper-circle");
               var me = this;
               setTimeout(function () {
-                me.addClass("fadeOut").addClass("out");
+                me.addClass("fadeOut");
                 setTimeout(function () {
                   me.remove();
                 }, 800);
