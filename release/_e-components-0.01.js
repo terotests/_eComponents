@@ -430,6 +430,57 @@
           });
         };
         send_email_comp(body, "send-email");
+
+        var support_question = function support_question(scope, name, size, baseColor) {
+          scope.customElement(name, {
+            // The data-model for the component
+            data: {
+              from_title: "Sähköpostiosoite vastausta varten",
+              from: "",
+              please_fill_email: "Ole hyvä ja anna sähköpostiosoite",
+              head_title: "Sähköpostin otsikko",
+              heading: "The e-mail heading",
+              content_title: "Palautteen aihe ja sisältö",
+              content: "",
+              text: "The contents of the email",
+              send_title: "Lähetä"
+            },
+            css: function css(myCss) {
+              myCss.bind(".alert-area", {
+                "padding": "2em",
+                "color": "#333",
+                "background-color": _e().mix("red", "gray")
+              });
+            },
+            init: function init(data) {
+
+              var alert = this.div("alert-area");
+              alert.hide();
+              this.e("paper-textarea", {
+                title: [data, "content_title"],
+                value: [data, "content"]
+              });
+
+              this.e("paper-input", {
+                title: [data, "from_title"],
+                value: [data, "from"]
+              });
+
+              this.e("paper-button", {
+                text: [data, "send_title"]
+              }).on("click", function () {
+                if (data.from().length == 0) {
+                  alert.show();
+                  alert.text(data.get("please_fill_email"));
+                  return;
+                }
+                this.send("send-email", data.toPlainData(), function () {});
+              });
+            },
+            tagName: "div"
+          });
+        };
+        support_question(body, "support-question");
       };
     })(this);
   };
@@ -483,5 +534,7 @@
 
 //var o = this.buttonGroup(item.buttongroup);
 //myLi.add(o);
+
+// any controller preferences?
 
 // any controller preferences?
