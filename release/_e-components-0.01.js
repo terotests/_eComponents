@@ -542,6 +542,7 @@
               var alert = this.div("alert-area");
               this.e("paper-textarea", {
                 title: [data, "content_title"],
+                height: "5em",
                 value: [data, "content"]
               });
 
