@@ -558,6 +558,7 @@
                     } else {
                       info.hide();
                     }
+                    b_visible = !b_visible;
                   });
                   info.hide();
                   li.add(info);
