@@ -355,10 +355,11 @@
             },
             init: function init(data, createOptions) {
               this.addClass("btn-content");
-              this.span().bind(data, "text");
+              var theText = this.span().bind(data, "text");
               this.on("click", function () {
                 this.e("paper-circle");
               });
+              return theText;
             },
             tagName: "div"
           });
