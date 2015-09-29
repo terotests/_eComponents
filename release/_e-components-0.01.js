@@ -258,6 +258,8 @@
                 title.removeClass("titleFocused");
               });
               var box = container.div("box");
+
+              return input;
             },
             tagName: "div"
           });
