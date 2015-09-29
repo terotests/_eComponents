@@ -5,6 +5,10 @@ Includes tests about Material design components etc.
 Usage examples : 
 http://codepen.io/teroktolonen/full/pjNzMx
 
+E-mailer example:
+http://codepen.io/teroktolonen/full/VvPYPQ
+
+
 
 ```javascript
 // install both material and bootstrap components
