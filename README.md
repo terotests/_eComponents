@@ -6,8 +6,28 @@ Usage examples :
 http://codepen.io/teroktolonen/full/pjNzMx
 
 
+```javascript
+// install both material and bootstrap components
+_eComponents({ 
+    material: true,
+    bootstrap : true });
 ```
-_eComponents();
+
+The use with mosh or without..
+
+```javascript
+var localModel = _data({
+  name: "John Smith"
+});
+
+body.e("paper-h1", {
+  text: "Try two-way binded things"
+});
+
+body.e("paper-input", {
+  title: "Name",
+  value: [localModel, "name"]
+});
 ```
 
 
