@@ -214,6 +214,10 @@
               var title = container.div("paper-input-title").bind(data, "title");
               var input = container[elemName]("paper-input");
 
+              if (data.get("type")) {
+                input.attr("type", data.get("type"));
+              }
+
               input.bind(data, "value");
               input.on("focus", function () {
                 box.removeClass("input-bar-close");
@@ -461,6 +465,7 @@
               });
 
               this.e("paper-input", {
+                type: "email",
                 title: [data, "from_title"],
                 value: [data, "from"]
               });
