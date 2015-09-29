@@ -259,8 +259,8 @@
             tagName: "div"
           });
         };
-        paper_input(body, "paper-input", "orange");
-        paper_input(body, "paper-textarea", "red", "textarea");
+        paper_input(body, "paper-input", "#4a89dc");
+        paper_input(body, "paper-textarea", "red", "#4a89dc");
 
         // material design circle effect component, which removes itself automatically
         var paper_circle = function paper_circle(scope, name, size, baseColor, duration) {
