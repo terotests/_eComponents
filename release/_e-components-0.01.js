@@ -397,6 +397,8 @@
           scope.customElement(name, {
             // The data-model for the component
             data: {
+              to_title: "Vastaanottaja(t)",
+              to: "",
               head_title: "Sähköpostin otsikko",
               heading: "The e-mail heading",
               text: "The contents of the email",
@@ -404,6 +406,10 @@
             },
             css: function css(myCss) {},
             init: function init(data) {
+              this.e("paper-input", {
+                title: [data, "to_title"],
+                value: [data, "to"]
+              });
               this.e("paper-input", {
                 title: [data, "head_title"],
                 value: [data, "heading"]
