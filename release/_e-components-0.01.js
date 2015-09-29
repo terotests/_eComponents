@@ -559,6 +559,7 @@
                       info.hide();
                     }
                   });
+                  info.hide();
                   li.add(info);
                   return li;
                 });

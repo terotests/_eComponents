@@ -337,6 +337,9 @@ var paper_input = function(scope, name, baseColor, elemName) {
       }
       if(data.get("placeholder")) {
           input.attr("placeholder", data.get("placeholder"));
+      }  
+      if(data.get("height")) {
+          input.height(data.get("height"));
       }      
       input.bind(data, "value");
       input.on("focus", function() {
@@ -466,6 +469,66 @@ create_btn(body, "pri-button", "gray", "0px");
 create_btn(body, "danger-button", "red", "0px");
 create_btn(body, "warning-button", "yellow", "0px");
 
+var alert_info = function(scope, name, color, borderRadius) {
+  scope.customElement(name, {
+    data: {
+      text: "Alert text"
+    },
+    css: function(myCss) {
+      var btnShadow = "0 3px 10px rgba(0, 0, 0, 0.34)";
+      var myColor = _e().dim(color, 0.1);
+      myCss.bind(".btn-content", {
+        "display": "block",
+        "padding": "0.4em 0.8em",
+        "position": "relative",
+        "margin-top": "0.3em",
+        "margin-bottom": "0.3em",
+        "overflow": "hidden",
+        "cursor": "pointer",
+        "color": "#fff",
+        "border-radius": "4px",
+        "background-color": myColor,
+        "box-shadow": btnShadow
+      });
+      myCss.bind(".btn-content:hover", {
+        "background": _e().dim(_e().mix(color, "#4a89dc"), 0.1)
+      });
+      myCss.animation("enter", {
+        duration: "0.3s",
+        "iteration-count": 1,
+      }, {
+        transform: "scale(0)"
+      }, {
+        transform: "scale(1)"
+      });      
+      myCss.animation("fadeOut", {
+        duration: "0.5s",
+        "iteration-count": 1,
+      }, {
+        transform: "scale(1)"
+      }, {
+        transform: "scale(0)"
+      });
+      myCss.bind(".out", { "display" : "none"});
+    },
+    init: function(data, createOptions) {
+      this.addClass("enter");
+      this.addClass("btn-content");
+      this.span().bind(data, "text");
+      var me = this;
+      setTimeout( function() {
+          me.addClass("fadeOut");
+          setTimeout(function() {
+              me.remove();
+          },400);
+      },5000);
+    },
+    tagName: "div"
+  })
+}
+
+alert_info(body, "alert-info", "#4a89dc");
+
 var paper_heading = function(scope, name, size, baseColor) {
     scope.customElement(name, {
       // The data-model for the component
@@ -561,6 +624,56 @@ var send_email_comp = function(scope, name, size, baseColor) {
   }
 send_email_comp( body, "send-email");
 
+var faq_list = function(scope, name, size, baseColor) {
+    scope.customElement(name, {
+      // The data-model for the component
+      data: {
+        from_title : "Sähköpostiosoite vastausta varten",
+        from:  "",          
+        please_fill_email : "Ole hyvä ja anna sähköpostiosoite",
+        content_title : "Palautteen aihe ja sisältö",
+        content: "",        
+        text : "The contents of the email",
+        send_title : "Lähetä"
+      },
+      css: function(myCss) {
+        myCss.bind(".alert-area", {
+            "height" : "40px"
+        })
+      },
+      init: function(data) {
+
+        var results = this.div("faq-area");
+        
+        var data_id = data.get("dataid");
+        if(data_id) {
+            var qList = _data(data_id);      
+            
+            this.div("faq-items").mvc(qList.items, function(item) {
+                var li = _e("div").addClass("faq-item");
+                var info = _e();
+                info.p().text( item.text() );
+                var b_visible = false;
+                li.e("paper-h2", { text : item.heading()}).on("click", function() {
+                    if(!b_visible) {
+                        info.show();
+                    } else {
+                        info.hide();
+                    }
+                }); 
+                info.hide();
+                li.add(info);
+                return li;
+            });
+        }
+        
+      },
+      tagName: "div"
+    });
+  }
+faq_list( body, "faq-list");
+
+
 var support_question = function(scope, name, size, baseColor) {
     scope.customElement(name, {
       // The data-model for the component
@@ -575,18 +688,16 @@ var support_question = function(scope, name, size, baseColor) {
       },
       css: function(myCss) {
         myCss.bind(".alert-area", {
-            "padding" : "0.6em",
-            "color" : "#333",
-            "border-radius" : "4px",
-            "background-color" : "#eee"
-        });
+            "height" : "40px"
+        })
       },
       init: function(data) {
 
         var alert = this.div("alert-area");
-        alert.hide();
+
         this.e("paper-textarea", {
             title : [data, "content_title"], 
+            height : "5em",
             value : [data, "content"] });   
             
         this.e("paper-input", {
@@ -598,14 +709,22 @@ var support_question = function(scope, name, size, baseColor) {
         this.e("paper-button", {
             text : [data, "send_title"] }).on("click", function() {
                 if(!validateEmail( data.get("from"))) {
-                    alert.show();
-                    alert.text(data.get("please_fill_email"));
+                    alert.clear();
+                    alert.e("alert-info", {
+                        text : data.get("please_fill_email")
+                    })
                     return;
                 }
                 this.send("support-question", data.toPlainData(), function() {
                     // any controller preferences? 
                 });
-            });           
+            });       
+            
+        if(data.get("faqid")) {
+            this.e("paper-h1", { text : "Usein kysyttyjä kysymyksiä"});
+            this.e("faq-list", { dataid : data.get("faqid") });
+        }
+         
       },
       tagName: "form"
     });
