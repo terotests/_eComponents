@@ -147,7 +147,7 @@
                 "margin-bottom": "0.2em",
                 "margin-right": "0.2em"
               });
-              myCss.bind(".invalid", {
+              myCss.bind("input.invalid", {
                 "border-color": "red"
               });
               myCss.bind(".paper-input", {
