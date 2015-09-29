@@ -471,6 +471,7 @@
 
               this.e("paper-input", {
                 type: "email",
+                required: true,
                 title: [data, "from_title"],
                 value: [data, "from"]
               });
