@@ -438,8 +438,6 @@
               from_title: "Sähköpostiosoite vastausta varten",
               from: "",
               please_fill_email: "Ole hyvä ja anna sähköpostiosoite",
-              head_title: "Sähköpostin otsikko",
-              heading: "The e-mail heading",
               content_title: "Palautteen aihe ja sisältö",
               content: "",
               text: "The contents of the email",
@@ -447,8 +445,9 @@
             },
             css: function css(myCss) {
               myCss.bind(".alert-area", {
-                "padding": "2em",
-                "color": "#333",
+                "padding": "0.6em",
+                "color": "white",
+                "border-radius": "4px",
                 "background-color": _e().mix("red", "gray")
               });
             },
