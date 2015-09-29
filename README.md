@@ -8,6 +8,9 @@ http://codepen.io/teroktolonen/full/pjNzMx
 E-mailer example:
 http://codepen.io/teroktolonen/full/VvPYPQ
 
+Random comps:
+http://codepen.io/teroktolonen/full/MaJWqM
+
 
 
 ```javascript
@@ -660,6 +663,7 @@ var faq_list = function(scope, name, size, baseColor) {
                     } else {
                         info.hide();
                     }
+                    b_visible = !b_visible;
                 }); 
                 info.hide();
                 li.add(info);
