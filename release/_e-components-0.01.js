@@ -148,7 +148,7 @@
                 "margin-right": "0.2em"
               });
               myCss.bind("input.invalid", {
-                "border-color": "red"
+                "color": _e().mix("red", baseColor)
               });
               myCss.bind(".paper-input", {
                 "border-radius": "0",
