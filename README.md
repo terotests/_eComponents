@@ -224,6 +224,10 @@ if(options.bootstrap) {
 ```javascript
 
 
+var validateEmail  = function(email) {
+    var re = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
+    return re.test(email);
+}
 var paper_input = function(scope, name, baseColor, elemName) {
   if (!elemName) elemName = "input";
   scope.customElement(name, {
@@ -237,6 +241,9 @@ var paper_input = function(scope, name, baseColor, elemName) {
         "margin-bottom": "0.2em",
         "margin-right": "0.2em"
       });
+      myCss.bind("input.invalid", {
+          "color" : _e().mix( "red", baseColor)
+      })
       myCss.bind(".paper-input", {
         "border-radius": "0",
         "width": "100%",
@@ -312,6 +319,25 @@ var paper_input = function(scope, name, baseColor, elemName) {
       var title = container.div("paper-input-title").bind(data, "title")
       var input = container[elemName]("paper-input");
 
+      if(data.get("type")) {
+          input.attr("type", data.get("type"));
+          if(data.get("type")=="email") {
+              input.attr("type", "text");
+              input.on("value", function() {
+                    if( validateEmail(input.val()) ) {
+                        input.removeClass("invalid");
+                    } else {
+                        input.addClass("invalid");
+                    }
+              });
+          }
+      }
+      if(data.get("required")) {
+          input.attr("required", true);
+      }
+      if(data.get("placeholder")) {
+          input.attr("placeholder", data.get("placeholder"));
+      }      
       input.bind(data, "value");
       input.on("focus", function() {
         box.removeClass("input-bar-close");
@@ -331,8 +357,8 @@ var paper_input = function(scope, name, baseColor, elemName) {
     tagName: "div"
   });
 }
-paper_input(body, "paper-input", "orange");
-paper_input(body, "paper-textarea", "red", "textarea");
+paper_input(body, "paper-input", "#4a89dc");
+paper_input(body, "paper-textarea",  "#4a89dc", "textarea");
 
 // material design circle effect component, which removes itself automatically
 var paper_circle = function(scope, name, size, baseColor, duration) {
@@ -534,6 +560,58 @@ var send_email_comp = function(scope, name, size, baseColor) {
     });
   }
 send_email_comp( body, "send-email");
+
+var support_question = function(scope, name, size, baseColor) {
+    scope.customElement(name, {
+      // The data-model for the component
+      data: {
+        from_title : "Sähköpostiosoite vastausta varten",
+        from:  "",          
+        please_fill_email : "Ole hyvä ja anna sähköpostiosoite",
+        content_title : "Palautteen aihe ja sisältö",
+        content: "",        
+        text : "The contents of the email",
+        send_title : "Lähetä"
+      },
+      css: function(myCss) {
+        myCss.bind(".alert-area", {
+            "padding" : "0.6em",
+            "color" : "#333",
+            "border-radius" : "4px",
+            "background-color" : "#eee"
+        });
+      },
+      init: function(data) {
+
+        var alert = this.div("alert-area");
+        alert.hide();
+        this.e("paper-textarea", {
+            title : [data, "content_title"], 
+            value : [data, "content"] });   
+            
+        this.e("paper-input", {
+            type  : "email",
+            required : true,
+            title : [data, "from_title"], 
+            value : [data, "from"] });          
+
+        this.e("paper-button", {
+            text : [data, "send_title"] }).on("click", function() {
+                if(!validateEmail( data.get("from"))) {
+                    alert.show();
+                    alert.text(data.get("please_fill_email"));
+                    return;
+                }
+                this.send("support-question", data.toPlainData(), function() {
+                    // any controller preferences? 
+                });
+            });           
+      },
+      tagName: "form"
+    });
+  }
+support_question( body, "support-question");
+
 ```
 
 
