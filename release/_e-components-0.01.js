@@ -401,6 +401,8 @@
               to: "",
               head_title: "Sähköpostin otsikko",
               heading: "The e-mail heading",
+              content_title: "Sähköpostin otsikko",
+              content: "",
               text: "The contents of the email",
               send_title: "Lähetä"
             },
@@ -415,8 +417,8 @@
                 value: [data, "heading"]
               });
               this.e("paper-textarea", {
-                title: [data, "head_title"],
-                value: [data, "heading"]
+                title: [data, "content_title"],
+                value: [data, "content"]
               });
               this.e("paper-button", {
                 text: [data, "send_title"]
