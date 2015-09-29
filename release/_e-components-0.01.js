@@ -363,6 +363,52 @@
         create_btn(body, "danger-button", "red", "0px");
         create_btn(body, "warning-button", "yellow", "0px");
 
+        var alert_info = function alert_info(scope, name, color, borderRadius) {
+          scope.customElement(name, {
+            data: {
+              text: "Alert text"
+            },
+            css: function css(myCss) {
+              var btnShadow = "0 3px 10px rgba(0, 0, 0, 0.34)";
+              var myColor = _e().mix("#4a89dc", color);
+              myCss.bind(".btn-content", {
+                "display": "block",
+                "padding": "0.4em 0.8em",
+                "position": "relative",
+                "margin": "0.3em",
+                "overflow": "hidden",
+                "cursor": "pointer",
+                "color": "#fff",
+                "border-radius": "4px",
+                "background-color": myColor,
+                "inner-shadow": btnShadow
+              });
+              myCss.bind(".btn-content:hover", {
+                "background": _e().dim(_e().mix(color, "#4a89dc"), 0.1)
+              });
+              myCss.animation("tryMe", {
+                duration: "4s",
+                "iteration-count": 1 }, {
+                transform: "rotate(0deg)"
+              }, {
+                transform: "rotate(360deg)"
+              });
+            },
+            init: function init(data, createOptions) {
+              this.addClass("btn-content");
+              this.span().bind(data, "text");
+              this.e("paper-circle");
+              var me = this;
+              setTimeout(function () {
+                me.remove();
+              }, 5000);
+            },
+            tagName: "div"
+          });
+        };
+
+        alert_info(body, "alert-info", "blue");
+
         var paper_heading = function paper_heading(scope, name, size, baseColor) {
           scope.customElement(name, {
             // The data-model for the component
@@ -469,18 +515,10 @@
               text: "The contents of the email",
               send_title: "Lähetä"
             },
-            css: function css(myCss) {
-              myCss.bind(".alert-area", {
-                "padding": "0.6em",
-                "color": "#333",
-                "border-radius": "4px",
-                "background-color": "#eee"
-              });
-            },
+            css: function css(myCss) {},
             init: function init(data) {
 
               var alert = this.div("alert-area");
-              alert.hide();
               this.e("paper-textarea", {
                 title: [data, "content_title"],
                 value: [data, "content"]
@@ -497,8 +535,10 @@
                 text: [data, "send_title"]
               }).on("click", function () {
                 if (!validateEmail(data.get("from"))) {
-                  alert.show();
-                  alert.text(data.get("please_fill_email"));
+                  alert.e("alert-info", {
+                    text: data.get("please_fill_email")
+                  });
+
                   return;
                 }
                 this.send("support-question", data.toPlainData(), function () {});
