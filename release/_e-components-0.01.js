@@ -548,11 +548,16 @@
                 this.div("faq-items").mvc(qList.items, function (item) {
                   var li = _e("div").addClass("faq-item");
                   var info = _e();
+                  info.p().text(item.text());
+                  var b_visible = false;
                   li.e("paper-h2", {
                     text: item.heading()
                   }).on("click", function () {
-                    info.clear();
-                    info.p().text(item.text());
+                    if (!b_visible) {
+                      info.show();
+                    } else {
+                      info.hide();
+                    }
                   });
                   li.add(info);
                   return li;
