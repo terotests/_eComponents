@@ -472,9 +472,9 @@
             css: function css(myCss) {
               myCss.bind(".alert-area", {
                 "padding": "0.6em",
-                "color": "white",
+                "color": "#333",
                 "border-radius": "4px",
-                "background-color": _e().mix("red", "gray")
+                "background-color": _e().mix("orange", "gray")
               });
             },
             init: function init(data) {
