@@ -17,6 +17,37 @@
        * @param Object body
        */
       _myTrait_.bsComps = function (body) {
+        var bsSetItemContent = function bsSetItemContent(item, toElem) {
+          if (item.get("icon")) {
+            toElem.span(toElem.str(["glyphicon glyphicon-", item.get("icon")]));
+            toElem.span().html("&nbsp;");
+          }
+          if (item.get("iconImg")) {
+            aa.img("iconImg", {
+              src: item.get("iconImg")
+            });
+          }
+          if (item.get("leftBadge")) toElem.span("badge").text(item.get("leftBadge"));
+
+          if (item.buttongroup) {}
+
+          toElem.span().bind(item, "text");
+
+          if (item.get("rightBadge")) {
+            console.log("--> biding to rightBadge");
+            toElem.span("badge").bind(item, "rightBadge");
+          }
+          if (item.get("active")) {
+            toElem.addClass("active");
+          }
+          item.on("active", function () {
+            if (item.get("active")) {
+              toElem.addClass("active");
+            } else {
+              toElem.removeClass("active");
+            }
+          });
+        };
 
         var create_bs_btn = function create_bs_btn(scope, type) {
           scope.customElement("btn-" + type, {
@@ -26,7 +57,7 @@
             css: function css(myCss) {},
             init: function init(data, createOptions) {
               this.addClass("btn btn-" + type);
-              this.span().bind(data, "text");
+              bsSetItemContent(data, this);
             },
             tagName: "button"
           });
@@ -36,6 +67,47 @@
         create_bs_btn(body, "danger");
         create_bs_btn(body, "warning");
         create_bs_btn(body, "default");
+
+        body.customElement("tabs", {
+          data: {
+            text: "Button text",
+            dataid: ""
+          },
+          css: function css(myCss) {
+            myCss.bind(".nav", {
+              cursor: "pointer"
+            });
+          },
+          init: function init(data) {
+            if (data && data.get("dataid")) {
+              var items = _data(data.get("dataid"));
+              var bc = this.ul("nav nav-tabs");
+              bc.attr("role", "tablist");
+              bc.mvc(items, function (item) {
+                var myLi = _e("li");
+                var aa = myLi.a();
+                bsSetItemContent(item, aa);
+                if (item.get("active")) {
+                  myLi.addClass("active");
+                }
+                item.on("active", function () {
+                  if (item.get("active")) {
+                    myLi.addClass("active");
+                  } else {
+                    myLi.removeClass("active");
+                  }
+                });
+                myLi.on("click", function () {
+                  items.forEach(function (ii) {
+                    ii.set("active", false);
+                  });
+                  item.set("active", true);
+                });
+                return myLi;
+              });
+            }
+          }
+        });
       };
 
       if (_myTrait_.__traitInit && !_myTrait_.hasOwnProperty("__traitInit")) _myTrait_.__traitInit = _myTrait_.__traitInit.slice();
@@ -368,3 +440,6 @@
     define(__amdDefs__);
   }
 }).call(new Function("return this")());
+
+//var o = this.buttonGroup(item.buttongroup);
+//myLi.add(o);
