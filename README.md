@@ -359,6 +359,8 @@ var paper_input = function(scope, name, baseColor, elemName) {
         title.removeClass("titleFocused");
       })
       var box = container.div("box");
+      
+      return input;
     },
     tagName: "div"
   });
@@ -459,10 +461,11 @@ var create_btn = function(scope, name, color, borderRadius) {
     },
     init: function(data, createOptions) {
       this.addClass("btn-content");
-      this.span().bind(data, "text");
+      var theText = this.span().bind(data, "text");
       this.on("click", function() {
         this.e("paper-circle");
       });
+      return theText;
     },
     tagName: "div"
   })
