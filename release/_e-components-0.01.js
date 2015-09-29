@@ -370,7 +370,7 @@
             },
             css: function css(myCss) {
               var btnShadow = "0 3px 10px rgba(0, 0, 0, 0.34)";
-              var myColor = _e().mix("#4a89dc", color, 0.3);
+              var myColor = _e().dim(color, 0.3);
               myCss.bind(".btn-content", {
                 "display": "block",
                 "padding": "0.4em 0.8em",
@@ -388,7 +388,7 @@
                 "background": _e().dim(_e().mix(color, "#4a89dc"), 0.1)
               });
               myCss.animation("fadeOut", {
-                duration: "1s",
+                duration: "0.5s",
                 "iteration-count": 1 }, {
                 transform: "scale(1)"
               }, {
