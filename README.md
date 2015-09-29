@@ -16,17 +16,27 @@ _eComponents({
 The use with mosh or without..
 
 ```javascript
-var localModel = _data({
-  name: "John Smith"
-});
 
+// simple usage example
+
+var body = _e(document.body);
 body.e("paper-h1", {
   text: "Try two-way binded things"
+});
+
+// or with two-way databinding 
+
+var localModel = _data({
+  name: "John Smith"
 });
 
 body.e("paper-input", {
   title: "Name",
   value: [localModel, "name"]
+});
+
+localModel.on("name", function() {
+    console.log("New name "+localModel.name());
 });
 ```
 
