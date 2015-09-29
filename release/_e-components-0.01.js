@@ -520,6 +520,50 @@
         };
         send_email_comp(body, "send-email");
 
+        var faq_list = function faq_list(scope, name, size, baseColor) {
+          scope.customElement(name, {
+            // The data-model for the component
+            data: {
+              from_title: "Sähköpostiosoite vastausta varten",
+              from: "",
+              please_fill_email: "Ole hyvä ja anna sähköpostiosoite",
+              content_title: "Palautteen aihe ja sisältö",
+              content: "",
+              text: "The contents of the email",
+              send_title: "Lähetä"
+            },
+            css: function css(myCss) {
+              myCss.bind(".alert-area", {
+                "height": "40px"
+              });
+            },
+            init: function init(data) {
+
+              var results = this.div("faq-area");
+
+              var data_id = data.get("dataid");
+              if (data_id) {
+                var qList = _data(data_id);
+
+                this.ul("list-group").mvc(qList.items, function (item) {
+                  var li = _e("li").addClass("list-group-item");
+                  var info = _e();
+                  li.e("paper-h2", {
+                    text: item.heading()
+                  }).on("click", function () {
+                    info.clear();
+                    info.p().text(item.text());
+                  });
+                  li.add(info);
+                  return li;
+                });
+              }
+            },
+            tagName: "div"
+          });
+        };
+        faq_list(body, "faq-list");
+
         var support_question = function support_question(scope, name, size, baseColor) {
           scope.customElement(name, {
             // The data-model for the component
@@ -540,6 +584,7 @@
             init: function init(data) {
 
               var alert = this.div("alert-area");
+
               this.e("paper-textarea", {
                 title: [data, "content_title"],
                 height: "5em",
