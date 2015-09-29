@@ -474,7 +474,7 @@
                   alert.text(data.get("please_fill_email"));
                   return;
                 }
-                this.send("send-email", data.toPlainData(), function () {});
+                this.send("support-question", data.toPlainData(), function () {});
               });
             },
             tagName: "div"
