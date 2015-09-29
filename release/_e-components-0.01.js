@@ -130,6 +130,10 @@
        */
       _myTrait_.materialComps = function (body) {
 
+        var validateEmail = function validateEmail(email) {
+          var re = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
+          return re.test(email);
+        };
         var paper_input = function paper_input(scope, name, baseColor, elemName) {
           if (!elemName) elemName = "input";
           scope.customElement(name, {
@@ -142,6 +146,9 @@
                 "margin-top": "0.2em",
                 "margin-bottom": "0.2em",
                 "margin-right": "0.2em"
+              });
+              myCss.bind(".invalid", {
+                "border-color": "red"
               });
               myCss.bind(".paper-input", {
                 "border-radius": "0",
@@ -217,8 +224,14 @@
               if (data.get("type")) {
                 input.attr("type", data.get("type"));
                 if (data.get("type") == "email") {
-                  input.attr("pattern", "/^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:.[a-zA-Z0-9-]+)*$/");
                   input.attr("type", "text");
+                  input.on("value", function () {
+                    if (validateEmail(input.val())) {
+                      input.removeClass("invalid");
+                    } else {
+                      input.addClass("invalid");
+                    }
+                  });
                 }
               }
               if (data.get("required")) {
