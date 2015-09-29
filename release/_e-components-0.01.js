@@ -487,7 +487,7 @@
                 this.send("support-question", data.toPlainData(), function () {});
               });
             },
-            tagName: "div"
+            tagName: "form"
           });
         };
         support_question(body, "support-question");
