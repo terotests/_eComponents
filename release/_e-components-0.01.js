@@ -49,6 +49,37 @@
           });
         };
 
+        body.customElement("bs-checkbox", {
+          data: {
+            icon: "glyphicon glyphicon-check"
+          },
+          css: function css(myCss) {},
+          init: function init(data, createOptions) {
+            if (data.get("dataid")) {
+              var model = _data(data.get("dataid")),
+                  variableName = data.get("varName");
+              var ch = _e("span");
+              ch.touchclick();
+              ch._type = "checkbox";
+              ch.addClass("glyphicon glyphicon-check");
+              ch.bind(model, variableName, function (v) {
+                var on = "glyphicon glyphicon-check";
+                var off = "glyphicon glyphicon-unchecked";
+                if (v) {
+                  ch.removeClass(off);
+                  ch.addClass(on);
+                } else {
+                  ch.removeClass(on);
+                  ch.addClass(off);
+                }
+              });
+              this.add(ch);
+            }
+            return ch;
+          },
+          tagName: "span"
+        });
+
         var create_bs_btn = function create_bs_btn(scope, type) {
           scope.customElement("btn-" + type, {
             data: {
@@ -112,36 +143,51 @@
         var demoData = _data({
           items: [{
             name: "topitem 1",
+            selected: false,
             items: [{
-              name: "item 1"
+              name: "item 1",
+              selected: false
             }, {
-              name: "item 2"
+              name: "item 2",
+              selected: false
             }, {
-              name: "item 3"
+              name: "item 3",
+              selected: false
             }, {
-              name: "item 4"
+              name: "item 4",
+              selected: false
             }]
           }, {
             name: "topitem 2",
+            selected: false,
             items: [{
-              name: "item 5"
+              name: "item 5",
+              selected: false
             }, {
-              name: "item 6"
+              name: "item 6",
+              selected: false
             }, {
-              name: "item 7"
+              name: "item 7",
+              selected: false
             }, {
-              name: "item 8"
+              name: "item 8",
+              selected: false
             }]
           }, {
             name: "topitem 3",
+            selected: false,
             items: [{
-              name: "item 9"
+              name: "item 9",
+              selected: false
             }, {
-              name: "item 10"
+              name: "item 10",
+              selected: false
             }, {
-              name: "item 11"
+              name: "item 11",
+              selected: false
             }, {
-              name: "item 12"
+              name: "item 12",
+              selected: false
             }]
           }]
         });
@@ -200,7 +246,10 @@
                 item.set("selected", false);
               }
               if (level > 1) {
-                o.tnCheckbox(item, "selected");
+                o.e("bs-checkbox", {
+                  dataid: item.getID(),
+                  varName: "selected"
+                });
               }
               o.span().text(" ");
               var name = o.span("dragLabel").bind(item, "name");
