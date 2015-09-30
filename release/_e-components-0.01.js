@@ -35,7 +35,6 @@
           toElem.span().bind(item, "text");
 
           if (item.get("rightBadge")) {
-            console.log("--> biding to rightBadge");
             toElem.span("badge").bind(item, "rightBadge");
           }
           if (item.get("active")) {
@@ -56,7 +55,7 @@
           },
           css: function css(myCss) {},
           init: function init(data) {
-            console.log("bs-checkbox", data.get("dataid"));
+
             if (data.get("dataid")) {
               var model = _data(data.get("dataid")),
                   variableName = data.get("varName");
