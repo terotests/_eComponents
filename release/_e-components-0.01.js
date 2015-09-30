@@ -108,6 +108,118 @@
             }
           }
         });
+
+        var demoData = _data({
+          items: [{
+            name: "topitem 1",
+            items: [{
+              name: "item 1"
+            }, {
+              name: "item 2"
+            }, {
+              name: "item 3"
+            }, {
+              name: "item 4"
+            }]
+          }, {
+            name: "topitem 2",
+            items: [{
+              name: "item 5"
+            }, {
+              name: "item 6"
+            }, {
+              name: "item 7"
+            }, {
+              name: "item 8"
+            }]
+          }, {
+            name: "topitem 3",
+            items: [{
+              name: "item 9"
+            }, {
+              name: "item 10"
+            }, {
+              name: "item 11"
+            }, {
+              name: "item 12"
+            }]
+          }]
+        });
+
+        body.customElement("select-tree", {
+          css: function css(myCss) {},
+          data: {
+            dataid: demoData.getID(),
+            firstLevel: "items",
+            secondLevel: "items"
+          },
+          init: function init(data) {
+            var model = _data(data.get("dataid"));
+
+            var level_1 = model.get("firstLevel");
+            var level_2 = model.get("secondLevel");
+
+            var didAll = false;
+
+            this.e("btn-default").text("Valitse kaikki").on("click", function () {
+              var cnt = 0,
+                  total = 0;
+              model[level_1].forEach(function (g) {
+                g[level_2].forEach(function (g) {
+                  if (g.get("selected")) cnt++;
+                  total++;
+                });
+              });
+              if (cnt == 0) didAll = false;
+              if (didAll) {
+                model[level_1].forEach(function (g) {
+                  g.set("selected", false);
+                  model[level_1].forEach(function (g) {
+                    g.set("selected", false);
+                  });
+                });
+                didAll = false;
+              } else {
+                model[level_1].forEach(function (g) {
+                  g.set("selected", true);
+                  model[level_1].forEach(function (g) {
+                    g.set("selected", true);
+                  });
+                });
+                didAll = true;
+              }
+            });
+
+            this.ul("nav nav-pills").tree(model[level_1], function (item, level) {
+              var o = _e("li");
+              o.addClass("clickable");
+              o.addClass("list-group-item");
+              if (!item.get("selected")) {
+                item.set("selected", false);
+              }
+              if (level > 1) {
+                o.tnCheckbox(item, "selected");
+              }
+              o.span().text(" ");
+              var name = o.span("dragLabel").bind(item, "name");
+
+              var bAll = true;
+              o.on("click", function () {
+                if (level > 1) {
+                  item.set("selected", !item.get("selected"));
+                } else {
+                  item.groups.forEach(function (g) {
+                    g.set("selected", bAll);
+                  });
+                  bAll = !bAll;
+                }
+              });
+              o.touchclick();
+              this.subTree(item[level_2], o.ul());
+              return o;
+            });
+          }
+        });
       };
 
       if (_myTrait_.__traitInit && !_myTrait_.hasOwnProperty("__traitInit")) _myTrait_.__traitInit = _myTrait_.__traitInit.slice();
@@ -581,6 +693,7 @@
               from_title: "Sähköpostiosoite vastausta varten",
               from: "",
               please_fill_email: "Ole hyvä ja anna sähköpostiosoite",
+              please_check_email: "Ole hyvä ja tarkasta, että sähköpostiosoite on oikein",
               content_title: "Palautteen aihe ja sisältö",
               content: "",
               text: "The contents of the email",
@@ -611,10 +724,17 @@
               this.e("paper-button", {
                 text: [data, "send_title"]
               }).on("click", function () {
-                if (!validateEmail(data.get("from"))) {
+                if (!data.get("from")) {
                   alert.clear();
                   alert.e("alert-info", {
                     text: data.get("please_fill_email")
+                  });
+                  return;
+                }
+                if (!validateEmail(data.get("from"))) {
+                  alert.clear();
+                  alert.e("alert-info", {
+                    text: data.get("please_check_email")
                   });
                   return;
                 }
