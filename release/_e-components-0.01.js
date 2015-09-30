@@ -634,6 +634,47 @@
           });
         };
         support_question(body, "support-question");
+
+        var create_frame = function create_frame(scope, name, size, baseColor) {
+          scope.customElement(name, {
+            // The data-model for the component
+            data: {
+              title: "Content frame",
+              sub_title: "The subtitle",
+              send_title: "Tallenna tiedot"
+            },
+            css: function css(myCss) {
+              myCss.bind(".frameContent", {
+                padding: "1em"
+              });
+              myCss.bind(".contentHead", {
+                "border-radius": "4px 4px 0px 0px",
+                "width": "100%",
+                "background-color": "#3f50b5",
+                "color": "white",
+                "line-height": "2",
+                "font-size": "2em",
+                "padding": "0.3em"
+              });
+              myCss.bind(".contentFrame", {
+                "border": "0px",
+                "border-radius": "5px",
+                "padding": "0em",
+                "background-color": "#f7f7f7"
+              });
+            },
+            init: function init(data) {
+              this.addClass("contentFrame");
+
+              this.div("contentHead").bind(data, "title");
+
+              var frameDiv = this.div("frameContent");
+              return frameDiv; // --- just return the content - the next place to start
+            },
+            tagName: "div"
+          });
+        };
+        create_frame(body, "panel");
       };
     })(this);
   };
