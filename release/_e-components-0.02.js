@@ -18,6 +18,57 @@
        */
       _myTrait_.bsComps = function (body) {
 
+        body.customElement("popup-menu", {
+          init: function init() {
+            var rel = this.relative();
+            var abs = rel.div().absolute();
+            var popDJ = abs.div("");
+            var is_open = false;
+            var content = popDJ.ul("dropdown-menu", function () {});
+            abs.x(0).y(0);
+            this.toggle = function () {
+              if (!is_open) {
+                rel.z(100000);
+                popDJ.addClass("open");
+              } else {
+                popDJ.removeClass("open");
+              }
+              is_open = !is_open;
+            };
+            return content;
+          }
+        });
+
+        body.customElement("dropdown-button", {
+          data: {},
+          init: function init(data) {
+            var model = _data(data.get("dataid"));
+            var popper;
+            var is_open = false;
+            var btn = this.e("btn-default", {
+              text: model.get("text") || "Dropdown",
+              icon: model.get("icon") || "circle-arrow-down"
+            }).on("click", function () {
+              popper.toggle();
+            });
+            popper = this.div().e("popup-menu");
+            popper.mvc(model.items, function (item) {
+              return _e("li", function () {
+                this.a({
+                  href: "#"
+                }).text(item.text()).on("click", function () {
+                  this.send(item.get("action"), item.get("data"));
+                });
+              });
+            });
+            this.toggle = function () {
+              popper.toggle();
+            };
+            this._dom.style.display = "inline-block";
+          },
+          tagName: "span"
+        });
+
         body.customElement("tree-select", {
           css: function css(myCss) {
             myCss.bind(".treeItem", {
@@ -1045,6 +1096,10 @@
     define(__amdDefs__);
   }
 }).call(new Function("return this")());
+
+//this.li().a({href: "#"}).text("Action");
+//this.li().a({href: "#"}).text("Action");
+//this.li().a({href: "#"}).text("Action");
 
 //var o = this.buttonGroup(item.buttongroup);
 //myLi.add(o);
