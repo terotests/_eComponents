@@ -154,6 +154,7 @@
             secondLevel: "items"
           },
           init: function init(data) {
+
             var model = _data(data.get("dataid"));
 
             var level_1 = model.get("firstLevel");
@@ -161,6 +162,7 @@
 
             var didAll = false;
 
+            debugger;
             this.e("btn-default").text("Valitse kaikki").on("click", function () {
               var cnt = 0,
                   total = 0;
