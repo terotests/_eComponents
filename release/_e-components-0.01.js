@@ -174,7 +174,7 @@
               selected: false
             }, {
               name: "item 2",
-              selected: false
+              selected: true
             }, {
               name: "item 3",
               selected: false
@@ -234,7 +234,7 @@
             var didAll = false;
 
             this.e("btn-default").text("Valitse kaikki").on("click", function () {
-              debugger;
+
               var cnt = 0,
                   total = 0;
               model[level_1].forEach(function (g) {
@@ -247,7 +247,7 @@
               if (didAll) {
                 model[level_1].forEach(function (g) {
                   g.set("selected", false);
-                  model[level_1].forEach(function (g) {
+                  model[level_2].forEach(function (g) {
                     g.set("selected", false);
                   });
                 });
@@ -255,7 +255,7 @@
               } else {
                 model[level_1].forEach(function (g) {
                   g.set("selected", true);
-                  model[level_1].forEach(function (g) {
+                  model[level_2].forEach(function (g) {
                     g.set("selected", true);
                   });
                 });
