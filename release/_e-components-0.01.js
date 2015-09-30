@@ -54,7 +54,7 @@
             icon: "glyphicon glyphicon-check"
           },
           css: function css(myCss) {},
-          init: function init(data, createOptions) {
+          init: function init(data) {
             if (data.get("dataid")) {
               var model = _data(data.get("dataid")),
                   variableName = data.get("varName");
@@ -74,8 +74,8 @@
                 }
               });
               this.add(ch);
+              return ch;
             }
-            return ch;
           },
           tagName: "span"
         });
