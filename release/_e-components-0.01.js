@@ -17,6 +17,30 @@
        * @param Object body
        */
       _myTrait_.bsComps = function (body) {
+
+        _e().extendAll({
+          bstnCheckbox: function bstnCheckbox(model, variableName) {
+            var ch = _e("span");
+            ch.touchclick();
+            ch._type = "checkbox";
+            ch.addClass("glyphicon glyphicon-check");
+            ch.bind(model, variableName, function (v) {
+              var on = "glyphicon glyphicon-check";
+              var off = "glyphicon glyphicon-unchecked";
+              if (v) {
+                ch.removeClass(off);
+                ch.addClass(on);
+              } else {
+                ch.removeClass(on);
+                ch.addClass(off);
+              }
+            });
+
+            this.add(ch);
+            return ch;
+          }
+        });
+
         var bsSetItemContent = function bsSetItemContent(item, toElem) {
           if (item.get("icon")) {
             toElem.span(toElem.str(["glyphicon glyphicon-", item.get("icon")]));
@@ -247,10 +271,7 @@
                 item.set("selected", false);
               }
               if (level > 1) {
-                o.e("bs-checkbox", {
-                  dataid: item.getID(),
-                  varName: "selected"
-                });
+                o.bstnCheckbox(item, "selected");
               }
               o.span().text(" ");
               var name = o.span("dragLabel").bind(item, "name");
