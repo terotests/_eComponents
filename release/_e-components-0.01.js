@@ -247,7 +247,7 @@
               if (didAll) {
                 model[level_1].forEach(function (g) {
                   g.set("selected", false);
-                  model[level_2].forEach(function (g) {
+                  g[level_2].forEach(function (g) {
                     g.set("selected", false);
                   });
                 });
@@ -255,7 +255,7 @@
               } else {
                 model[level_1].forEach(function (g) {
                   g.set("selected", true);
-                  model[level_2].forEach(function (g) {
+                  g[level_2].forEach(function (g) {
                     g.set("selected", true);
                   });
                 });
