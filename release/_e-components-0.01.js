@@ -55,6 +55,7 @@
           },
           css: function css(myCss) {},
           init: function init(data) {
+            console.log("bs-checkbox", data.get("dataid"));
             if (data.get("dataid")) {
               var model = _data(data.get("dataid")),
                   variableName = data.get("varName");
