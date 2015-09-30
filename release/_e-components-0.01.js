@@ -58,7 +58,7 @@
             });
           },
           data: {
-            dataid: demoData.getID(),
+            dataid: 0,
             firstLevel: "items",
             secondLevel: "items"
           },
