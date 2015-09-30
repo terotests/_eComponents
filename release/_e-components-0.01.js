@@ -210,6 +210,7 @@
             var didAll = false;
 
             this.e("btn-default").text("Valitse kaikki").on("click", function () {
+              debugger;
               var cnt = 0,
                   total = 0;
               model[level_1].forEach(function (g) {
