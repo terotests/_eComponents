@@ -18,29 +18,6 @@
        */
       _myTrait_.bsComps = function (body) {
 
-        _e().extendAll({
-          bstnCheckbox: function bstnCheckbox(model, variableName) {
-            var ch = _e("span");
-            ch.touchclick();
-            ch._type = "checkbox";
-            ch.addClass("glyphicon glyphicon-check");
-            ch.bind(model, variableName, function (v) {
-              var on = "glyphicon glyphicon-check";
-              var off = "glyphicon glyphicon-unchecked";
-              if (v) {
-                ch.removeClass(off);
-                ch.addClass(on);
-              } else {
-                ch.removeClass(on);
-                ch.addClass(off);
-              }
-            });
-
-            this.add(ch);
-            return ch;
-          }
-        });
-
         var bsSetItemContent = function bsSetItemContent(item, toElem) {
           if (item.get("icon")) {
             toElem.span(toElem.str(["glyphicon glyphicon-", item.get("icon")]));
@@ -227,12 +204,10 @@
           init: function init(data) {
 
             var model = _data(data.get("dataid"));
-
             var level_1 = data.get("firstLevel");
             var level_2 = data.get("secondLevel");
 
             var didAll = false;
-
             this.e("btn-default").text("Valitse kaikki").on("click", function () {
 
               var cnt = 0,
@@ -271,7 +246,10 @@
                 item.set("selected", false);
               }
               if (level > 1) {
-                o.bstnCheckbox(item, "selected");
+                o.e("bs-checkbox", {
+                  dataid: item.getID(),
+                  varName: "selected"
+                });
               }
               o.span().text(" ");
               var name = o.span("dragLabel").bind(item, "name");
