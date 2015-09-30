@@ -18,6 +18,156 @@
        */
       _myTrait_.bsComps = function (body) {
 
+        body.customElement("tree-select", {
+          css: function css(myCss) {
+            myCss.bind(".treeItem", {
+              cursor: "pointer"
+            });
+            myCss.bind(".list-icon", {
+              width: "1.3em",
+              "line-height": "1.7em",
+              "display": "inline-block"
+            });
+            myCss.bind(".level-1", {
+              padding: "5px",
+              "color": "#eee",
+              "background-color": "#4a89dc"
+            });
+            myCss.bind(".level-2", {
+              padding: "0px"
+            });
+            myCss.bind(".list-select", {
+              padding: "5px",
+              "display": "inline-block"
+            });
+            myCss.bind(".list-select-sub", {
+              padding: "5px",
+              "display": "inline-block"
+            });
+            myCss.bind(".list-1", {
+              padding: "5px",
+              "display": "inline-block"
+            });
+            myCss.bind(".list-select-item .selected", {
+              color: "black",
+              "background-color": "#fff"
+            });
+            myCss.bind(".list-select-item", {
+              color: "#777",
+              "background-color": "#eee"
+            });
+          },
+          data: {
+            dataid: demoData.getID(),
+            firstLevel: "items",
+            secondLevel: "items"
+          },
+          init: function init(data) {
+
+            var model = _data(data.get("dataid"));
+            var level_1 = data.get("firstLevel");
+            var level_2 = data.get("secondLevel");
+            var default_icon = data.get("defaultIcon");
+
+            var didAll = false;
+
+            var tools = this.div("tools", function () {
+              this.e("btn-default").text("Valitse kaikki").on("click", function () {
+
+                var cnt = 0,
+                    total = 0;
+                model[level_1].forEach(function (g) {
+                  g[level_2].forEach(function (g) {
+                    if (g.get("selected")) cnt++;
+                    total++;
+                  });
+                });
+                if (cnt == 0) didAll = false;
+                if (didAll) {
+                  model[level_1].forEach(function (g) {
+                    g.set("selected", false);
+                    g[level_2].forEach(function (g) {
+                      g.set("selected", false);
+                    });
+                  });
+                  didAll = false;
+                } else {
+                  model[level_1].forEach(function (g) {
+                    g.set("selected", true);
+                    g[level_2].forEach(function (g) {
+                      g.set("selected", true);
+                    });
+                  });
+                  didAll = true;
+                }
+              });
+              this.e("btn-default", {
+                icon: "fast-backward",
+                text: "Peruuta"
+              }).on("click", function () {
+                model.undoStep();
+              });
+              this.e("btn-default", {
+                icon: "fast-forward",
+                text: "Uudelleen"
+              }).on("click", function () {
+                model.redoStep();
+              });
+            });
+
+            this.div("list-select").tree(model[level_1], function (item, level) {
+              var o = _e("div");
+              o.addClass("list-" + level);
+              if (level == 1) {
+                var heading = o.div("level-" + level);
+              } else {
+                var heading = o.span("level-" + level);
+              }
+              // <span class="input-group-addon" id="basic-addon1">@</span>
+              var icon = heading.div("list-icon");
+              if (default_icon || item.get("icon")) {
+
+                icon.span("glyphicon glyphicon-" + (item.get("icon") || default_icon));
+              }
+              heading.addClass("clickable");
+              o.addClass("treeItem");
+              o.addClass("list-select-item");
+              if (!item.get("selected")) {
+                item.set("selected", false);
+              }
+              if (level > 1) {
+                heading.e("bs-checkbox", {
+                  dataid: item.getID(),
+                  varName: "selected"
+                });
+              }
+              heading.span().text(" ");
+              var name = heading.span("dragLabel").bind(item, "name");
+
+              if (item.get("selected")) o.addClass("selected");
+              item.on("selected", function () {
+                if (item.get("selected")) o.addClass("selected");
+                if (!item.get("selected")) o.removeClass("selected");
+              });
+
+              var bAll = true;
+              o.on("click", function () {
+                if (level > 1) {
+                  item.set("selected", !item.get("selected"));
+                } else {
+                  item[level_2].forEach(function (g) {
+                    g.set("selected", bAll);
+                  });
+                  bAll = !bAll;
+                }
+              });
+              o.touchclick();
+              this.subTree(item[level_2], o.div("list-select-sub"));
+              return o;
+            });
+            return tools;
+          }
+        });
         var bsSetItemContent = function bsSetItemContent(item, toElem) {
           if (item.get("icon")) {
             toElem.span(toElem.str(["glyphicon glyphicon-", item.get("icon")]));
