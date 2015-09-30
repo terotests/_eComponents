@@ -208,7 +208,6 @@
 
             var didAll = false;
 
-            debugger;
             this.e("btn-default").text("Valitse kaikki").on("click", function () {
               var cnt = 0,
                   total = 0;
