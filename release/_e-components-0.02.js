@@ -282,6 +282,21 @@
           tagName: "span"
         });
 
+        body.customElement("bs-panel", {
+          css: function css(myCss) {},
+          init: function init(data) {
+
+            this.addClass("panel panel-default");
+            this.panelHead = this.div("panel-heading");
+            this.panelHead.span().bind(this.props(), "title");
+
+            this.panelBody = this.div("panel-body");
+            this.panelFooter = this.div("panel-footer");
+
+            return this.panelBody;
+          }
+        });
+
         var create_bs_btn = function create_bs_btn(scope, type) {
           scope.customElement("btn-" + type, {
             data: {
