@@ -1103,6 +1103,9 @@
               var theText = this.span().bind(data, "text");
               this.on("click", function () {
                 this.e("paper-circle");
+                var act = this.props().get("action"),
+                    data = this.props().get("data");
+                if (act) this.send(act, data);
               });
               return theText;
             },
