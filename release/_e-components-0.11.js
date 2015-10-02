@@ -694,18 +694,18 @@
             var classList = this.getRegisteredClasses();
             if (componentName) {
 
+              this.sendHandler("*", function (msg, res, err, url) {
+                var out = me.ref("handlerOutput");
+                out.clear();
+                out.div().text("message  '" + url + "'");
+                out.pre().text(JSON.stringify(msg));
+              });
+
               this.addClass("comp-preview");
               this.div("preview-head").text(componentName).clickTo("return");
               this.div("close-preview").text("close").clickTo("return");
 
               this.div(function () {
-
-                this.sendHandler("*", function (msg, res, err, url) {
-                  var out = me.ref("handlerOutput");
-                  out.clear();
-                  out.div().text("message  '" + url + "'");
-                  out.pre().text(JSON.stringify(msg));
-                });
 
                 this.addClass("comp-preview-content");
                 this.div("handlerOutput", {
