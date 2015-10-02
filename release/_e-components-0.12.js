@@ -715,6 +715,7 @@
                 this.div("handlerOutput", {
                   ref: "handlerOutput"
                 });
+                debugger;
                 this.e(componentName);
 
                 this.div("show-toggler").text("show render code").clickTo("show-render");
