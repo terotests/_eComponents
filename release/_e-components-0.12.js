@@ -396,7 +396,9 @@
         var create_bs_btn = function create_bs_btn(scope, type) {
           scope.customElement("btn-" + type, {
             data: {
-              text: "Button text"
+              text: "Button text",
+              action: "default-action",
+              data: "default-data"
             },
             css: function css(myCss) {},
             init: function init(data, createOptions) {
