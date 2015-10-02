@@ -84,6 +84,78 @@
           tagName: "span"
         });
 
+        var id_cnt = 1;
+        var treeDemoData = _data({
+          id: id_cnt++,
+          items: [{
+            id: id_cnt++,
+            name: "topitem 1",
+            icon: "user",
+            selected: false,
+            items: [{
+              id: id_cnt++,
+              name: "Item1",
+              selected: false
+            }, {
+              id: id_cnt++,
+              name: "item 2",
+              selected: true
+            }, {
+              id: id_cnt++,
+              name: "item 3",
+              selected: false
+            }, {
+              id: id_cnt++,
+              name: "item 4",
+              selected: false
+            }]
+          }, {
+            name: "topitem 2",
+            icon: "user",
+            id: id_cnt++,
+            selected: false,
+            items: [{
+              id: id_cnt++,
+              name: "item 5",
+              selected: false
+            }, {
+              id: id_cnt++,
+              name: "item 6",
+              selected: false
+            }, {
+              id: id_cnt++,
+              name: "item 7",
+              selected: false
+            }, {
+              id: id_cnt++,
+              name: "item 8",
+              selected: false
+            }]
+          }, {
+            id: id_cnt++,
+            name: "topitem 3",
+            icon: "user",
+            selected: false,
+            items: [{
+              id: id_cnt++,
+              name: "item 9",
+              selected: false
+            }, {
+              id: id_cnt++,
+              name: "item 10",
+              selected: false
+            }, {
+              id: id_cnt++,
+              name: "item 11",
+              selected: true
+            }, {
+              id: id_cnt++,
+              name: "item 12",
+              selected: false
+            }]
+          }]
+        });
+
         body.customElement("tree-select", {
           css: function css(myCss) {
             myCss.bind(".treeItem", {
@@ -124,7 +196,7 @@
             });
           },
           data: {
-            dataid: 0,
+            dataid: treeDemoData.getID(),
             firstLevel: "items",
             secondLevel: "items"
           },
