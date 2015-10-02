@@ -404,14 +404,22 @@
         create_bs_btn(body, "default");
 
         var tabsDemoData = _data([{
-          text: "tab1"
+          text: "tab1",
+          action: "tab-selected",
+          data: "tab1"
         }, {
-          text: "tab2"
+          text: "tab2",
+          action: "tab-selected",
+          data: "tab2"
         }, {
           text: "tab3",
-          active: true
+          active: true,
+          action: "tab-selected",
+          data: "tab3"
         }, {
-          text: "tab4"
+          text: "tab4",
+          action: "tab-selected",
+          data: "tab4"
         }]);
 
         body.customElement("tabs", {
