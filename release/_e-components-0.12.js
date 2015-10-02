@@ -402,6 +402,10 @@
             init: function init(data, createOptions) {
               this.addClass("btn btn-" + type);
               bsSetItemContent(data, this);
+              this.on("click", function () {
+                var act = this.props().get("action");
+                if (act) this.send(act, this.props().get("data"));
+              });
             },
             tagName: "button"
           });
