@@ -359,7 +359,8 @@
 
         body.customElement("bs-checkbox", {
           meta: {
-            category: "Checkbox"
+            category: "Checkbox",
+            unlisted: true
           },
           data: {
             icon: "glyphicon glyphicon-check",
