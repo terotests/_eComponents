@@ -289,11 +289,11 @@
 
                 if (item.get("selected")) {
                   o.addClass("selected");
-                  myself.send("selected", item.getID());
+                  o.send("selected", item.getID());
                 }
                 if (!item.get("selected")) {
                   o.removeClass("selected");
-                  myself.send("unselected", item.getID());
+                  o.send("unselected", item.getID());
                 }
               });
 
