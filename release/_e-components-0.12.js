@@ -689,6 +689,9 @@
             this._hasRenderVisible = true;
           },
           init: function init() {
+
+            debugger;
+
             var componentName = this.props().get("name");
             var me = this;
             var classList = this.getRegisteredClasses();
