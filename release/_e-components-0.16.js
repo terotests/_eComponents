@@ -1456,6 +1456,9 @@
        */
       _myTrait_.ownComps = function (t) {
         _e().createClass("v-menu", {
+          meta: {
+            category: "Menus"
+          },
           css: function css(myCss) {
             myCss.bind(".menuStyle", {
               cursor: "pointer",
