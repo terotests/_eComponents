@@ -698,7 +698,7 @@
               this.div("preview-head").text(componentName).clickTo("return");
               this.div("close-preview").text("close").clickTo("return");
 
-              this.e("div", function () {
+              this.div(function () {
 
                 this.sendHandler("*", function (msg, res, err, url) {
                   var out = me.ref("handlerOutput");
