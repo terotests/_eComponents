@@ -857,6 +857,7 @@
           this.bsComps(options.root || body);
         }
 
+        this.ownComps();
         this.extras();
       });
 
@@ -1445,6 +1446,164 @@
           });
         };
         create_frame(body, "panel");
+      };
+
+      /**
+       * @param float t
+       */
+      _myTrait_.ownComps = function (t) {
+        _e().createClass("v-menu", {
+          css: function css(myCss) {
+            myCss.bind(".menuStyle", {
+              cursor: "pointer",
+              "font-size": "0.9em"
+            });
+            var topHeadColor = _e().mix("#555", "#333");
+            myCss.bind(".menu-top-head", {
+              cursor: "pointer",
+              "background-color": topHeadColor,
+              "background": "linear-gradient(" + topHeadColor + ", " + _e().dim(topHeadColor, 0.1) + ")",
+              "color": "#aaa",
+              "padding": "0.8em",
+              "padding-left": "0.8em",
+              "border-bottom": "1px solid" + _e().dim(topHeadColor, 0.2),
+              "border-top": "1px solid" + _e().dim(topHeadColor, -0.2)
+            });
+            myCss.bind(".menu-top-head:hover", {
+              "color": "white",
+              "text-shadow": "1px 6px 10px #333",
+              "background-color": _e().dim(topHeadColor, -0.1),
+              "background": "linear-gradient(" + topHeadColor + ", " + _e().dim(topHeadColor, -0.1) + ")",
+              "border-bottom": "1px solid" + _e().dim(topHeadColor, 0.2),
+              "border-top": "1px solid" + _e().dim(topHeadColor, -0.2)
+            });
+            var subColor = _e().mix("#476392", "#aaa");
+            myCss.bind(".sub-top-head", {
+              cursor: "pointer",
+              "padding-left": "1.2em",
+              "background-color": "#eee",
+              "padding": "0.8em",
+              "color": "#555",
+              "border-top": "1px solid" + _e().dim(subColor, 0.1)
+            });
+            myCss.bind(".sub-top-head:hover", {
+              "color": "#222",
+              "background-color": "#fff"
+            });
+          },
+          getInitialState: function getInitialState() {
+            return {
+              items: [{
+                name: "Effects",
+                items: [{
+                  name: "Cartoon",
+                  action: "menuClick",
+                  data: "menu-data1"
+                }, {
+                  name: "Movies",
+                  action: "menuClick",
+                  data: "menu-data2"
+                }]
+              }, {
+                name: "Colors",
+                items: [{
+                  name: "Ocean",
+                  action: "menuClick",
+                  data: "menu-data3"
+                },, {
+                  name: "Sunrise",
+                  action: "menuClick",
+                  data: "menu-data4"
+                },,]
+              }]
+            };
+          },
+          init: function init() {
+            var dataid = this.props().get("dataid");
+            var model;
+            if (dataid) {
+              model = _data(dataid);
+            } else {
+              model = this.state();
+            }
+            var me;
+            // menu has this helper function
+            this.pushToPath = function (path, itemData) {
+              var parts = path.split("/");
+              var find_or_insert_item = function find_or_insert_item(_x, _x2) {
+                var _again = true;
+
+                _function: while (_again) {
+                  var index = _x,
+                      from = _x2;
+                  name = did_find = undefined;
+                  _again = false;
+
+                  var name = parts[index];
+                  if (!name) return from;
+                  if (!from.hasOwn("items")) {
+                    from.set("items", []);
+                  }
+                  var did_find;
+                  from.items.forEach(function (i) {
+                    if (i.get("name") == name) did_find = i;
+                  });
+                  if (!did_find) {
+                    from.items.push({
+                      name: name,
+                      items: []
+                    });
+                    did_find = from.items.at(from.items.length() - 1);
+                  }
+                  if (did_find && parts.length <= index + 1) {
+
+                    return did_find;
+                  } else {
+                    _x = index + 1;
+                    _x2 = did_find;
+                    _again = true;
+                    continue _function;
+                  }
+                }
+              };
+
+              var parentNode = find_or_insert_item(0, model);
+              if (parentNode) {
+                //me.pre().text(JSON.stringify(itemData));
+                parentNode.items.push(itemData);
+                //me.pre().text(JSON.stringify(parentNode.toPlainData(), null, 2));
+                //me.pre().text(JSON.stringify(model.toPlainData(), null, 2));
+              }
+            };
+            this.addClass("menuStyle");
+            this.div().b().text("Vertical menu");
+            var me = this;
+            this.div().mvc(model.items, function (item) {
+              var o = _e();
+              var head = o.div("menu-top-head").text(item.name());
+              if (item.hasOwn("items")) {
+                var subtree = o.e("contentToggle").mvc(item.items, function (subItem) {
+                  var o = _e();
+                  o.addClass("sub-top-head");
+                  o.text(subItem.name());
+                  var action = subItem.get("action");
+                  if (action) {
+                    o.clickTo(action, subItem.get("data"));
+                  }
+                  return o;
+                });
+                head.on("click", function () {
+                  subtree.toggle();
+                  var action = item.get("action");
+                  if (item.get("action")) {
+                    o.send(action, item.get("data"));
+                  }
+                });
+              }
+              return o;
+            });
+          }
+        });
       };
     })(this);
   };
