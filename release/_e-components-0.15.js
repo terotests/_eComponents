@@ -1576,7 +1576,6 @@
               }
             };
             this.addClass("menuStyle");
-            this.div().b().text("Vertical menu");
             var me = this;
             this.div().mvc(model.items, function (item) {
               var o = _e();
