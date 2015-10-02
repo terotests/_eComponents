@@ -309,7 +309,7 @@
                 }
               });
               o.touchclick();
-              this.subTree(item[level_2], o.div("list-select-sub"));
+              if (level == 2) this.subTree(item[level_2], o.div("list-select-sub"));
               return o;
             });
             return tools;
