@@ -841,6 +841,80 @@
             });
           }
         });
+
+        _e().createClass("registeredComponentsMenu", {
+          meta: {
+            category: "Metadata",
+            description: "Displays all registered components in the system"
+          },
+          init: function init() {
+            var classList = this.getRegisteredClasses();
+            var me = this;
+            var menu = this.e("v-menu", {
+              dataid: _data({
+                items: []
+              }).getID()
+            });
+            Object.keys(classList).forEach(function (n) {
+              if (n == "registeredComponents") return; // avoid recursion :)
+              if (n == "registeredComponentsMenu") return;
+              if (n == "registeredComponentBrowser") return;
+
+              var data = classList[n];
+              var heading;
+              try {
+                var heading = data.meta.category;
+              } catch (e) {
+                heading = "Misc";
+              }
+
+              menu.pushToPath(heading, {
+                name: n,
+                action: "show-component",
+                data: n
+              });
+              /*
+              me.e("componentPreview", {
+              name: n
+              }).on("click", function() {
+              me.pushView(_e("componentPreviewFull", {
+              name: n,
+              action : "show-component",
+              data : n
+              }));
+              })
+              */
+            });
+          }
+        });
+
+        _e().createClass("registeredComponentBrowser", {
+          meta: {
+            category: "Metadata",
+            description: "Displays full preview of a given component"
+          },
+          css: function css(myCss) {
+            myCss.bind(".menuLeft", {
+              "width": "20%",
+              "display": "inline-block",
+              "vertical-align": "top"
+            });
+            myCss.bind(".areaRight", {
+              "width": "70%",
+              "display": "inline-block",
+              "vertical-align": "top"
+            });
+          },
+          "show-component": function showComponent(name) {
+            if (name) this.displayArea.pushView(_e("componentPreviewFull", {
+              name: name
+            }));
+          },
+          init: function init() {
+            this.div("menuLeft").e("registeredComponentsMenu");
+            this.displayArea = this.div("areaRight");
+          }
+        });
       };
 
       if (_myTrait_.__traitInit && !_myTrait_.hasOwnProperty("__traitInit")) _myTrait_.__traitInit = _myTrait_.__traitInit.slice();
