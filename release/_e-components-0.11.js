@@ -694,6 +694,7 @@
             var classList = this.getRegisteredClasses();
             if (componentName) {
 
+              debugger;
               this.sendHandler("*", function (msg, res, err, url) {
                 var out = me.ref("handlerOutput");
                 out.clear();
