@@ -1839,7 +1839,8 @@
             width: "50%"
           },
           meta: {
-            category: "Images"
+            category: "Images",
+            unlisted: true
           },
           css: function css(myCss) {
             myCss.bind(".container", {
