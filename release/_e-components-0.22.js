@@ -18,37 +18,139 @@
        */
       _myTrait_.bsComps = function (body) {
         /*
-        <table class="table table-striped">
-        <thead>
-        <tr>
-          <th>#</th>
-          <th>First Name</th>
-          <th>Last Name</th>
-          <th>Username</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-          <th scope="row">1</th>
-          <td>Mark</td>
-          <td>Otto</td>
-          <td>@mdo</td>
-        </tr>
-        <tr>
-          <th scope="row">2</th>
-          <td>Jacob</td>
-          <td>Thornton</td>
-          <td>@fat</td>
-        </tr>
-        <tr>
-          <th scope="row">3</th>
-          <td>Larry</td>
-          <td>the Bird</td>
-          <td>@twitter</td>
-        </tr>
-        </tbody>
-        </table>
+        <nav>
+        <ul class="pagination">
+        <li>
+        <a href="#" aria-label="Previous">
+        <span aria-hidden="true">&laquo;</span>
+        </a>
+        </li>
+        <li><a href="#">1</a></li>
+        <li><a href="#">2</a></li>
+        <li><a href="#">3</a></li>
+        <li><a href="#">4</a></li>
+        <li><a href="#">5</a></li>
+        <li>
+        <a href="#" aria-label="Next">
+        <span aria-hidden="true">&raquo;</span>
+        </a>
+        </li>
+        </ul>
+        </nav>
         */
+
+        // Try rendering for React target for this UI element...
+        body.customElement("bs-pagination", {
+          meta: {
+            category: "Navigation"
+          },
+          data: {
+            min: 1,
+            viewsize: 5,
+            max: 10,
+            active: 1,
+            start: 0
+          },
+          nextClick: function nextClick() {
+            var max = this.props().get("max");
+            if (this.activeIndex + 1 >= max) {
+              return;
+            }
+            this.activeIndex++;
+            if (this.startIndex + this.props().get("viewsize") < this.activeIndex) {
+              this.startIndex++;
+            }
+            this.refresh_numbers();
+            this.send("pagination", this.activeIndex);
+          },
+          prevClick: function prevClick() {
+            var max = this.props().get("max");
+            if (this.activeIndex - 1 < 0) {
+              return;
+            }
+            this.activeIndex--;
+            if (this.startIndex > this.activeIndex) {
+              this.startIndex--;
+            }
+            this.refresh_numbers();
+            this.send("pagination", this.activeIndex);
+          },
+          doSelect: function doSelect(index) {
+            this.activeIndex = index;
+            this.refresh_numbers();
+            this.send("pagination", index);
+          },
+          init: function init() {
+            var ul = this.ul("pagination");
+            var prev = ul.li().a({
+              href: "#",
+              "aria-label": "Previous"
+            }).span({
+              "aria-hidden": "true"
+            }).html("&laquo;");
+            prev.clickTo("prevClick");
+
+            var me = this;
+            this.refresh_numbers = function () {
+              var len = me.liArray.length;
+              var start = me.startIndex;
+              var end = start + me.props().get("viewsize");
+              var active = me.activeIndex;
+              for (var i = 0; i < len; i++) {
+                var li = me.liArray[i];
+                var a = me.itemArray[i];
+
+                if (i == active) {
+                  li.addClass("active");
+                } else {
+                  li.removeClass("active");
+                }
+                if (i < start) {
+                  li.hide();
+                } else {
+                  if (i > end) {
+                    li.hide();
+                  } else {
+                    li.show();
+                  }
+                }
+                a.text(i + 1);
+              }
+            };
+            // --
+            this.liArray = [];
+            this.itemArray = [];
+            this.startIndex = this.props().get("start");
+            this.activeIndex = this.props().get("active");
+
+            for (var i = 0; i < this.props().get("max"); i++) {
+              var li = ul.li();
+              var a = li.a({
+                href: "#"
+              });
+              this.liArray.push(li);
+              this.itemArray.push(a);
+              li.clickTo("doSelect", i);
+            }
+            this.refresh_numbers();
+
+            this.props().on("active", function () {
+              me.refresh_numbers();
+            });
+            this.props().on("start", function () {
+              me.refresh_numbers();
+            });
+
+            var next = ul.li().a({
+              href: "#",
+              "aria-label": "Previous"
+            }).span({
+              "aria-hidden": "true"
+            }).html("&raquo;");
+            next.clickTo("nextClick");
+          },
+          tagName: "nav"
+        });
 
         var testData = _data([{
           label: "Row1",
