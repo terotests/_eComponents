@@ -1530,6 +1530,55 @@
        * @param float t
        */
       _myTrait_.ownComps = function (t) {
+
+        _e().createClass("fluid-svg-icon", {
+          data: {
+            path: "M16,5.333c-7.732,0-14,4.701-14,10.5c0,1.982,0.741,3.833,2.016,5.414L2,25.667l5.613-1.441c2.339,1.317,5.237,2.107,8.387,2.107c7.732,0,14-4.701,14-10.5C30,10.034,23.732,5.333,16,5.333z",
+            icon_w: 20,
+            icon_h: 20,
+            fill: "black"
+          },
+          meta: {
+            category: "Images"
+          },
+          css: function css(myCss) {
+            myCss.bind(".container", {
+              cursor: "pointer",
+              height: "0",
+              "padding-top": "48%",
+              "position": "relative"
+            });
+            myCss.bind("svg", {
+              "position": "absolute",
+              "top": "0px",
+              "left": "0px" });
+            /*
+            .container {
+            width: 50%;
+            height: 0;
+            padding-top: 48%;
+            position: relative;
+            }
+            svg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            }    
+            */
+          },
+          init: function init() {
+            var path = this.props().get("path");
+            var svg = this.div("container").svg({
+              viewBox: "0 0 " + this.props().get("icon_w") + " " + this.props().get("icon_h")
+            });
+            svg.g().path({
+              fill: this.props().get("fill") || "black",
+              d: path
+            });
+          }
+
+        });
+
         _e().createClass("v-menu", {
           meta: {
             category: "Menus"
@@ -1539,7 +1588,7 @@
               cursor: "pointer",
               "font-size": "0.9em"
             });
-            var topHeadColor = _e().mix("#555", "#333");
+            var topHeadColor = _e().mix("#555", "#333", 0.4);
             myCss.bind(".menu-top-head", {
               cursor: "pointer",
               "background-color": topHeadColor,
