@@ -17,6 +17,125 @@
        * @param Object body
        */
       _myTrait_.bsComps = function (body) {
+        /*
+        <table class="table table-striped">
+        <thead>
+        <tr>
+          <th>#</th>
+          <th>First Name</th>
+          <th>Last Name</th>
+          <th>Username</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+          <th scope="row">1</th>
+          <td>Mark</td>
+          <td>Otto</td>
+          <td>@mdo</td>
+        </tr>
+        <tr>
+          <th scope="row">2</th>
+          <td>Jacob</td>
+          <td>Thornton</td>
+          <td>@fat</td>
+        </tr>
+        <tr>
+          <th scope="row">3</th>
+          <td>Larry</td>
+          <td>the Bird</td>
+          <td>@twitter</td>
+        </tr>
+        </tbody>
+        </table>
+        */
+
+        var testData = _data([{
+          label: "Row1",
+          items: [{
+            value: "value1",
+            type: "String"
+          }, {
+            value: "value2",
+            type: "String"
+          }, {
+            value: "value3",
+            type: "String"
+          }]
+        }, {
+          label: "Row2",
+          items: [{
+            value: "value4",
+            type: "String"
+          }, {
+            value: "value5",
+            type: "String"
+          }, {
+            value: "value6",
+            type: "String"
+          }]
+        }, {
+          label: "Row3",
+          items: [{
+            value: "value7",
+            type: "String"
+          }, {
+            value: "value8",
+            type: "String"
+          }, {
+            value: "value9",
+            type: "String"
+          }]
+        }]);
+
+        body.customElement("bs-table", {
+          meta: {
+            category: "Tables"
+          },
+          data: {
+            titles: "a,b,c,d",
+            dataid: testData.getID()
+          },
+          init: function init() {
+
+            var tbl = _e("table"),
+                body = _e("tbody");
+
+            tbl.addClass("table table-striped");
+            this.add(tbl);
+            tbl.add(body);
+
+            var titles = this.props().get("titles");
+
+            if (titles) {
+              var parts = titles.split(",");
+              var head = _e("tr");
+              parts.forEach(function (n) {
+                head.add(_e("th").text(n));
+              });
+              body.add(head);
+            }
+
+            var dataid = this.props().get("dataid");
+            if (dataid) {
+              var myData = _data(dataid);
+              body.mvc(myData, function (row) {
+                var head = _e("tr");
+                if (row.get("label")) {
+                  var th = _e("th");
+                  th.bind(row, "label");
+                  head.add(th);
+                }
+                row.items.forEach(function (cell) {
+                  var td = _e("td");
+                  td.bind(cell, "value");
+                  head.add(td);
+                });
+                return head;
+              });
+            }
+          }
+        });
 
         body.customElement("popup-menu", {
 
@@ -758,6 +877,12 @@
                   ref: "handlerOutput"
                 });
                 this.e(componentName);
+
+                this.div().text("To create the element use");
+                var initDefs = {};
+                var def = classList[componentName];
+                if (def.data) initDefs = def.data;
+                this.pre().text("_e('" + componentName + "', " + JSON.stringify(initDefs, null, 2) + ")");
 
                 this.div("show-toggler").text("show render code").clickTo("show-render");
                 this.div("sourceArea", {
@@ -1531,12 +1656,45 @@
        */
       _myTrait_.ownComps = function (t) {
 
+        // Stars
+        // M22.441,28.181c-0.419,0-0.835-0.132-1.189-0.392l-5.751-4.247L9.75,27.789c-0.354,0.26-0.771,0.392-1.189,0.392c-0.412,0-0.824-0.128-1.175-0.384c-0.707-0.511-1-1.422-0.723-2.25l2.26-6.783l-5.815-4.158c-0.71-0.509-1.009-1.416-0.74-2.246c0.268-0.826,1.037-1.382,1.904-1.382c0.004,0,0.01,0,0.014,0l7.15,0.056l2.157-6.816c0.262-0.831,1.035-1.397,1.906-1.397s1.645,0.566,1.906,1.397l2.155,6.816l7.15-0.056c0.004,0,0.01,0,0.015,0c0.867,0,1.636,0.556,1.903,1.382c0.271,0.831-0.028,1.737-0.739,2.246l-5.815,4.158l2.263,6.783c0.276,0.826-0.017,1.737-0.721,2.25C23.268,28.053,22.854,28.181,22.441,28.181L22.441,28.181z
+
+        _e().createClass("user-rating", {
+          meta: {
+            category: "Application"
+          },
+          data: {
+            max: 5,
+            rating: 3
+          },
+          css: function css(base) {
+            base.bind(".rating", {
+              "font-size": "2em"
+            });
+          },
+
+          init: function init() {
+            // just render it once doesn't change really :/
+            var cnt = this.props().get("max") || 5;
+            var rating = this.props().get("rating");
+            this.addClass("rating");
+            for (var i = 0; i < cnt; i++) {
+              if (i < rating) {
+                this.span("starFull").text("★");
+              } else {
+                this.span("star").text("☆");
+              }
+            }
+          }
+        });
+
         _e().createClass("fluid-svg-icon", {
           data: {
             path: "M16,5.333c-7.732,0-14,4.701-14,10.5c0,1.982,0.741,3.833,2.016,5.414L2,25.667l5.613-1.441c2.339,1.317,5.237,2.107,8.387,2.107c7.732,0,14-4.701,14-10.5C30,10.034,23.732,5.333,16,5.333z",
-            icon_w: 20,
-            icon_h: 20,
-            fill: "black"
+            icon_w: 30,
+            icon_h: 30,
+            fill: "black",
+            width: "50%"
           },
           meta: {
             category: "Images"
@@ -1568,13 +1726,16 @@
           },
           init: function init() {
             var path = this.props().get("path");
-            var svg = this.div("container").svg({
+            var cont = this.div("container");
+            cont.width(this.props().get("width") || "50%");
+            var svg = cont.svg({
               viewBox: "0 0 " + this.props().get("icon_w") + " " + this.props().get("icon_h")
             });
             svg.g().path({
               fill: this.props().get("fill") || "black",
               d: path
             });
+            return cont;
           }
 
         });
@@ -1731,6 +1892,28 @@
               }
               return o;
             });
+          }
+        });
+
+        _e().createClass("contentToggle", {
+
+          init: function init() {
+            var is_visible = !!this.props().get("visible");
+            var content = this.div();
+            if (is_visible) {
+              content.show();
+            } else {
+              content.hide();
+            }
+            content.toggle = function () {
+              is_visible = !is_visible;
+              if (is_visible) {
+                content.show();
+              } else {
+                content.hide();
+              }
+            };
+            return content;
           }
         });
       };
