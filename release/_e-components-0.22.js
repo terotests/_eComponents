@@ -38,6 +38,48 @@
         </ul>
         </nav>
         */
+        /*
+        <div class="progress">
+        <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" 
+        aria-valuemax="100" style="width: 60%;">
+        60%
+        </div>
+        </div>
+        */
+
+        body.customElement("bs-progressbar", {
+          meta: {
+            category: "Indicators"
+          },
+          data: {
+            min: 0,
+            max: 100,
+            value: 30
+          },
+          init: function init() {
+            this.addClass("progress");
+            var props = this.props();
+            var bb = this.div("progress-bar", {
+              role: "progressbar",
+              "aria-valuenow": [props, "value"],
+              "aria-valuemin": [props, "min"],
+              "aria-valuemax": [props, "max"] });
+            var total = props.get("max") - props.get("min");
+            if (total > 0) {
+              var update_p = function update_p() {
+                var val = props.get("value") - props.get("min");
+                if (isNaN(val)) val = 0;
+                if (val < 0) val = 0;
+                if (val > total) val = total;
+                bb.width(parseInt(100 * (props.get("value") - props.get("min")) / total) + "%");
+              };
+              props.on("value", function () {
+                update_p();
+              });
+              update_p();
+            }
+          }
+        });
 
         // Try rendering for React target for this UI element...
         body.customElement("bs-pagination", {
@@ -82,13 +124,12 @@
           },
           init: function init() {
             var ul = this.ul("pagination");
-            var prev = ul.li().a({
+            var prev = ul.li().clickTo("prevClick").a({
               href: "#",
               "aria-label": "Previous"
             }).span({
               "aria-hidden": "true"
             }).html("&laquo;");
-            prev.clickTo("prevClick");
 
             var me = this;
             this.refresh_numbers = function () {
@@ -141,13 +182,12 @@
               me.refresh_numbers();
             });
 
-            var next = ul.li().a({
+            var next = ul.li().clickTo("nextClick").a({
               href: "#",
               "aria-label": "Previous"
             }).span({
               "aria-hidden": "true"
             }).html("&raquo;");
-            next.clickTo("nextClick");
           },
           tagName: "nav"
         });
