@@ -47,6 +47,28 @@
         </div>
         */
 
+        body.customElement("bs-alert", {
+          meta: {
+            category: "Alerts" },
+          data: {
+            text: "The alert text",
+            type: "warning",
+            timeout: 5000 },
+          init: function init() {
+            this.addClass("alert alert-" + (this.props().get("type") || "info"));
+            this.bind(this.props(), "text");
+            var me = this;
+            if (this.props().get("timeout")) {
+              setTimeout(function () {
+                me.addClass("fadeOut");
+                setTimeout(function () {
+                  me.remove();
+                }, 400);
+              }, this.props().get("timeout"));
+            }
+          }
+        });
+
         body.customElement("bs-progressbar", {
           meta: {
             category: "Indicators"
@@ -1587,7 +1609,7 @@
         // create component for paper -like h1
         paper_heading(body, "paper-h1", "2em", "#333");
         paper_heading(body, "paper-h2", "1.5em", "#666");
-        paper_heading(body, "paper-h3", "1.5em", "#666");
+        paper_heading(body, "paper-h3", "1.3em", "#666");
 
         var send_email_comp = function send_email_comp(scope, name, size, baseColor) {
           scope.customElement(name, {
