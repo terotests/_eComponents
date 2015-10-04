@@ -2,6 +2,9 @@
 
 Includes tests about Material design components etc.
 
+All components browser:
+http://codepen.io/teroktolonen/full/ZbeLjw/
+
 Usage examples : 
 http://codepen.io/teroktolonen/full/pjNzMx
 
