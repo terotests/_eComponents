@@ -1820,8 +1820,56 @@
        */
       _myTrait_.ownComps = function (t) {
 
-        // Stars
-        // M22.441,28.181c-0.419,0-0.835-0.132-1.189-0.392l-5.751-4.247L9.75,27.789c-0.354,0.26-0.771,0.392-1.189,0.392c-0.412,0-0.824-0.128-1.175-0.384c-0.707-0.511-1-1.422-0.723-2.25l2.26-6.783l-5.815-4.158c-0.71-0.509-1.009-1.416-0.74-2.246c0.268-0.826,1.037-1.382,1.904-1.382c0.004,0,0.01,0,0.014,0l7.15,0.056l2.157-6.816c0.262-0.831,1.035-1.397,1.906-1.397s1.645,0.566,1.906,1.397l2.155,6.816l7.15-0.056c0.004,0,0.01,0,0.015,0c0.867,0,1.636,0.556,1.903,1.382c0.271,0.831-0.028,1.737-0.739,2.246l-5.815,4.158l2.263,6.783c0.276,0.826-0.017,1.737-0.721,2.25C23.268,28.053,22.854,28.181,22.441,28.181L22.441,28.181z
+        // Try loading extension
+        // https://rawgit.com/terotests/displayList/master/release/displayList-0.04.js?v=2
+
+        _e().createClass("view-demo", {
+          meta: {
+            category: "Application"
+          },
+          requires: {
+            js: [{
+              url: "https://rawgit.com/terotests/displayList/master/release/displayList-0.05.js?v=2"
+            }]
+          },
+          data: {},
+          css: function css(base) {},
+          init: function init() {
+
+            var chartDiv = this.div();
+            var debugArea = this.div();
+            chartDiv.width(300).height(300);
+            displayView().ePlugin();
+
+            var disp = chartDiv.displayView(300, 300, {});
+            disp.on("load", function () {
+              var theBox = disp.createObject("box", {
+                x: 10,
+                y: 10,
+                bgcolor: "red",
+                w: 40,
+                h: 40
+              });
+
+              var theBox = disp.createObject("path", {
+                x: 70,
+                y: 40,
+                bgcolor: "red",
+                w: 40,
+                h: 40,
+                svgPath: "M16,1.466C7.973,1.466,1.466,7.973,1.466,16c0,8.027,6.507,14.534,14.534,14.534c8.027,0,14.534-6.507,14.534-14.534C30.534,7.973,24.027,1.466,16,1.466zM20.729,7.375c0.934,0,1.688,1.483,1.688,3.312S21.661,14,20.729,14c-0.932,0-1.688-1.483-1.688-3.312S19.798,7.375,20.729,7.375zM11.104,7.375c0.932,0,1.688,1.483,1.688,3.312S12.037,14,11.104,14s-1.688-1.483-1.688-3.312S10.172,7.375,11.104,7.375zM16.021,26c-2.873,0-5.563-1.757-7.879-4.811c2.397,1.564,5.021,2.436,7.774,2.436c2.923,0,5.701-0.98,8.215-2.734C21.766,24.132,18.99,26,16.021,26z"
+              });
+            });
+            // captuer events going to the
+            disp._dom.addEventListener("click", function (e) {
+              var el = e.srcElement;
+              var dataid = el.getAttribute("data-id");
+              if (dataid) {
+                debugArea.pre().text("Clicked item " + dataid);
+              }
+            }, true);
+          }
+        });
 
         _e().createClass("user-rating", {
           meta: {
