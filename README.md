@@ -86,6 +86,7 @@ localModel.on("name", function() {
 - [bsComps](README.md#_eComponents_bsComps)
 - [extras](README.md#_eComponents_extras)
 - [materialComps](README.md#_eComponents_materialComps)
+- [materialize](README.md#_eComponents_materialize)
 - [ownComps](README.md#_eComponents_ownComps)
 
 
@@ -111,6 +112,270 @@ The class has following internal singleton variables:
 
 *The source code for the function*:
 ```javascript
+/*
+<nav>
+  <ul class="pagination">
+    <li>
+      <a href="#" aria-label="Previous">
+        <span aria-hidden="true">&laquo;</span>
+      </a>
+    </li>
+    <li><a href="#">1</a></li>
+    <li><a href="#">2</a></li>
+    <li><a href="#">3</a></li>
+    <li><a href="#">4</a></li>
+    <li><a href="#">5</a></li>
+    <li>
+      <a href="#" aria-label="Next">
+        <span aria-hidden="true">&raquo;</span>
+      </a>
+    </li>
+  </ul>
+</nav>
+*/
+/*
+<div class="progress">
+  <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" 
+  aria-valuemax="100" style="width: 60%;">
+    60%
+  </div>
+</div>
+*/
+
+body.customElement("bs-alert", {
+    meta : {
+        category : "Alerts",
+    },         
+    data : {
+        text : "The alert text",
+        type : "warning",
+        timeout : 5000,        
+    },
+  init: function() {
+      this.addClass("alert alert-"+(this.props().get("type")||"info"));
+      this.bind(this.props(), "text");
+      var me = this;
+      if(this.props().get("timeout")) {
+          setTimeout( function() {
+              me.addClass("fadeOut");
+              setTimeout(function() {
+                  me.remove();
+              },400);
+          },this.props().get("timeout"));
+      }
+    
+  }
+});
+
+body.customElement("bs-progressbar", {
+    meta : {
+        category : "Indicators"  
+    },         
+    data : {
+        min : 0,
+        max : 100,
+        value : 30
+    },
+  init: function() {
+    this.addClass("progress");
+    var props = this.props();
+    var bb = this.div("progress-bar", { role : "progressbar", 
+        "aria-valuenow" : [props, "value"],
+        "aria-valuemin" : [props, "min"],
+        "aria-valuemax" : [props, "max"],
+        });
+    var total = props.get("max") - props.get("min");
+    if(total > 0) {
+        var update_p = function() {
+            var val = props.get("value") - props.get("min");
+            if(isNaN(val)) val = 0;
+            if(val < 0 ) val = 0;
+            if(val > total ) val = total;
+            bb.width( parseInt( 100 * ( props.get("value") - props.get("min") ) / total )+"%" );            
+        }
+        props.on("value", function() {
+            update_p(); 
+        });
+        update_p(); 
+    }
+    
+  }
+});
+
+// Try rendering for React target for this UI element...
+body.customElement("bs-pagination", {
+    meta : {
+        category : "Navigation"  
+    },         
+    data : {
+        min : 1,
+        viewsize : 5,
+        max : 10,
+        active : 1,
+        start : 0
+    },
+  nextClick : function() {
+      var max = this.props().get("max");
+      if(this.activeIndex+1 >= max) {
+          return;
+      }
+      this.activeIndex++;
+      if( this.startIndex + this.props().get("viewsize") < this.activeIndex ) {
+          this.startIndex++;
+      }
+      this.refresh_numbers();
+      this.send("pagination", this.activeIndex);
+  },
+  prevClick : function() {
+      var max = this.props().get("max");
+      if(this.activeIndex-1 < 0) {
+          return;
+      }
+      this.activeIndex--;
+      if( this.startIndex > this.activeIndex ) {
+          this.startIndex--;
+      }
+      this.refresh_numbers();
+      this.send("pagination", this.activeIndex);
+  },  
+  doSelect : function(index) {
+      this.activeIndex = index;
+      this.refresh_numbers();
+      this.send("pagination", index);
+  },
+  init: function() {
+    var ul = this.ul("pagination");
+    var prev = ul.li()
+                 .clickTo("prevClick")
+                .a({href : "#", "aria-label" : "Previous"})
+                .span({"aria-hidden":"true"}).html("&laquo;");
+
+    var me = this;
+    this.refresh_numbers = function() {
+        var len = me.liArray.length;
+        var start = me.startIndex;
+        var end = start + me.props().get("viewsize");
+        var active = me.activeIndex;
+        for(var i=0; i<len; i++) {
+            var li = me.liArray[i];
+            var a  = me.itemArray[i];
+            
+            if(i==active) {
+                li.addClass("active");
+            } else {
+                li.removeClass("active");
+            }
+            if(i< start )  {
+                li.hide()
+            } else {
+                if(i>end) {
+                    li.hide()
+                } else {
+                    li.show();
+                }
+            }
+            a.text(i+1);
+        }
+    }
+    // -- 
+    this.liArray = [];
+    this.itemArray = [];
+    this.startIndex = this.props().get("start");
+    this.activeIndex = this.props().get("active");
+    
+    for(var i=0; i<this.props().get("max"); i++) {
+        var li = ul.li();
+        var a  = li.a({href:"#"});
+        this.liArray.push( li );
+        this.itemArray.push( a );
+        li.clickTo("doSelect", i);
+    }
+    this.refresh_numbers();
+    
+    this.props().on("active", function() {
+        me.refresh_numbers();
+    });
+    this.props().on("start", function() {
+        me.refresh_numbers();
+    });
+    
+    var next = ul.li()
+                .clickTo("nextClick")
+                .a({href : "#", "aria-label" : "Previous"})
+                .span({"aria-hidden":"true"}).html("&raquo;");    
+
+  },
+  tagName : "nav"
+});
+
+
+
+var testData = _data([
+    { label : "Row1", items : [
+            { value : "value1", type : "String"}, 
+            { value : "value2", type : "String"}, 
+            { value : "value3", type : "String"} ]},
+    { label : "Row2", items : [
+            { value : "value4", type : "String"}, 
+            { value : "value5", type : "String"}, 
+            { value : "value6", type : "String"} ]},
+    { label : "Row3", items : [
+            { value : "value7", type : "String"}, 
+            { value : "value8", type : "String"}, 
+            { value : "value9", type : "String"} ]}            
+]);
+
+body.customElement("bs-table", {
+    meta : {
+        category : "Tables"  
+    },         
+    data : {
+        titles : "a,b,c,d",
+        dataid : testData.getID()
+    },
+  init: function() {
+    
+    var tbl = _e("table"),
+        body = _e("tbody");
+    
+    tbl.addClass("table table-striped");
+    this.add(tbl);
+    tbl.add(body);
+    
+    var titles = this.props().get("titles");
+    
+    if(titles) {
+        var parts = titles.split(",");
+        var head = _e("tr");
+        parts.forEach( 
+            function(n) {
+                head.add(_e("th").text(n));
+            });
+        body.add(head);        
+    }
+    
+    var dataid = this.props().get("dataid");
+    if(dataid) {
+        var myData = _data(dataid);
+        body.mvc(myData,function(row) {
+            var head = _e("tr");
+            if(row.get("label")) {
+                var th = _e("th");
+                th.bind(row, "label");
+                head.add(th);
+            }
+            row.items.forEach( function(cell) {
+                var td = _e("td");
+                td.bind(cell, "value");
+                head.add(td);
+            });
+            return head;
+        });
+    }
+  }
+});
+
+
 
 body.customElement("popup-menu", {
      
@@ -458,12 +723,19 @@ var bsSetItemContent = function(item, toElem) {
   });
 }
 
+var cbTestData = _data({
+    selected : "true"
+})
+
 body.customElement("bs-checkbox", {
     meta : {
-        category : "Checkbox"  
+        category : "Checkbox",
+        unlisted : true
     },      
     data: {
-      icon: "glyphicon glyphicon-check"
+      icon: "glyphicon glyphicon-check",
+      dataid : cbTestData.getID(),
+      varName : "selected"
     },
     css: function(myCss) {},
     init: function(data) {
@@ -728,6 +1000,9 @@ _e().createClass("componentPreviewFull", {
         category : "Metadata",
         description : "Displays full preview of a given component"
     },      
+    data : {
+        name : "alert-info"  
+    },
   css: function(myCss) {
     myCss.bind(".comp-preview", {
       "width": "100%",
@@ -827,6 +1102,12 @@ _e().createClass("componentPreviewFull", {
         this.addClass("comp-preview-content");
         this.div("handlerOutput", {ref:"handlerOutput"});
         this.e(componentName);
+        
+        this.div().text("To create the element use");
+        var initDefs = {};
+        var def = classList[componentName];
+        if (def.data) initDefs = def.data;
+        this.pre().text("_e('" + componentName + "', " + JSON.stringify(initDefs, null, 2) + ")");        
 
         this.div("show-toggler").text("show render code").clickTo("show-render");
         this.div("sourceArea", {
@@ -855,7 +1136,10 @@ _e().createClass("componentPreviewFull", {
 _e().createClass("componentPreview", {
     meta : {
         category : "Metadata"  
-    },       
+    },    
+    data : {
+        name : "alert-info"  
+    },    
   css: function(myCss) {
     myCss.bind(".comp-preview", {
       "width": "20%",
@@ -922,6 +1206,79 @@ _e().createClass("registeredComponents", {
     });
   }
 });
+
+_e().createClass("registeredComponentsMenu", {
+    meta : {
+        category : "Metadata",
+        description : "Displays all registered components in the system"
+    },   
+  init: function() {
+    var classList = this.getRegisteredClasses();
+    var me = this;
+    var menu = this.e("v-menu", {
+      dataid: _data({ items : []}).getID()
+    });     
+    Object.keys(classList).forEach(function(n) {
+      if (n == "registeredComponents") return; // avoid recursion :)
+      if (n == "registeredComponentsMenu") return; 
+      if (n == "registeredComponentBrowser") return;
+     
+      var data = classList[n];
+      
+      
+      
+      var heading ;
+      try {
+        if(data.meta.unlisted) return;  
+        var heading = data.meta.category 
+      } catch(e) {
+        heading = "Misc";
+        return;
+      }
+
+      menu.pushToPath( heading, {
+         name : n,
+         action : "show-component",
+         data : n        
+      });     
+
+    });
+  }
+});
+
+_e().createClass("registeredComponentBrowser", {
+    meta : {
+        category : "Metadata",
+        description : "Displays full preview of a given component"
+    },    
+    css : function(myCss) {
+        var smallMedia = myCss.forMedia("@media screen and (max-width: 480px)");
+        smallMedia.bind(".menuLeft",{
+            display : "none"
+        });        
+        myCss.bind(".menuLeft", {
+            "width" : "20%",
+            "display" : "inline-block",
+            "vertical-align" : "top"
+        });
+        myCss.bind(".areaRight", {
+            "width" : "70%",
+            "display" : "inline-block",
+            "vertical-align" : "top"
+        });      
+    },
+    "show-component" : function(name) {
+      if(name) this.displayArea.pushView(_e("componentPreviewFull", {
+          name: name
+        }));
+    },
+    init : function() {
+        this.div("menuLeft").e("registeredComponentsMenu");
+        this.displayArea = this.div("areaRight"); 
+    }
+});
+    
+    
 
 ```
 
@@ -1333,7 +1690,7 @@ var paper_heading = function(scope, name, size, baseColor) {
   // create component for paper -like h1 
 paper_heading(body, "paper-h1", "2em", "#333");
 paper_heading(body, "paper-h2", "1.5em", "#666");
-paper_heading(body, "paper-h3", "1.5em", "#666");
+paper_heading(body, "paper-h3", "1.3em", "#666");
 
 var send_email_comp = function(scope, name, size, baseColor) {
     scope.customElement(name, {
@@ -1379,17 +1736,11 @@ send_email_comp( body, "send-email");
 var faq_list = function(scope, name, size, baseColor) {
     scope.customElement(name, {
         meta : {
-            category : "Application"  
+            category : "Application"
         },         
       // The data-model for the component
       data: {
-        from_title : "Sähköpostiosoite vastausta varten",
-        from:  "",          
-        please_fill_email : "Ole hyvä ja anna sähköpostiosoite",
-        content_title : "Palautteen aihe ja sisältö",
-        content: "",        
-        text : "The contents of the email",
-        send_title : "Lähetä"
+
       },
       css: function(myCss) {
         myCss.bind(".alert-area", {
@@ -1545,18 +1896,184 @@ create_frame(body, "panel");
 
 ```
 
+### <a name="_eComponents_materialize"></a>_eComponents::materialize(t)
+
+
+*The source code for the function*:
+```javascript
+// "https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.1/css/materialize.min.css"
+
+```
+
 ### <a name="_eComponents_ownComps"></a>_eComponents::ownComps(t)
 
 
 *The source code for the function*:
 ```javascript
+
+// Try loading extension
+// https://rawgit.com/terotests/displayList/master/release/displayList-0.04.js?v=2
+
+
+// 
+_e().createClass("d3-charts", {
+    meta : {
+        category : "Application"
+    },     
+    requires : {
+        js : [
+            { url : "https://cdnjs.cloudflare.com/ajax/libs/d3/3.2.2/d3.v3.min.js" },
+            { url : "https://cdn.rawgit.com/novus/nvd3/v1.8.1/build/nv.d3.js"}
+        ],
+        css : [
+            { url : "https://cdn.rawgit.com/novus/nvd3/v1.8.1/build/nv.d3.css"}
+        ]
+    },
+    data : {
+
+    },    
+    css : function(base) {
+        
+    },
+    init : function() {
+        
+        // For latest working examples see:        
+        // SEE: http://nvd3-community.github.io/nvd3/examples/site.html
+        
+        var targetDiv = this,
+            mySvg = this.svg({ width : 600, height : 400});
+        var historicalBarChart = [
+            {
+                key: "Cumulative Return",
+                values: [
+                    {
+                        "label" : "A" ,
+                        "value" : 29.765957771107
+                    } ,
+                    {
+                        "label" : "B" ,
+                        "value" : 0
+                    } ,
+                    {
+                        "label" : "C" ,
+                        "value" : 32.807804682612
+                    } ,
+                    {
+                        "label" : "D" ,
+                        "value" : 196.45946739256
+                    } ,
+                    {
+                        "label" : "E" ,
+                        "value" : 0.19434030906893
+                    } ,
+                    {
+                        "label" : "F" ,
+                        "value" : 98.079782601442
+                    } ,
+                    {
+                        "label" : "G" ,
+                        "value" : 13.925743130903
+                    } ,
+                    {
+                        "label" : "H" ,
+                        "value" : 5.1387322875705
+                    }
+                ]
+            }
+        ];
+        nv.addGraph(function() {
+            var chart = nv.models.discreteBarChart()
+                .x(function(d) { return d.label })
+                .y(function(d) { return d.value })
+                .staggerLabels(true)
+                //.staggerLabels(historicalBarChart[0].values.length > 8)
+                .showValues(true)
+                .duration(250)
+                ;
+            d3.select(mySvg._dom)
+                .datum(historicalBarChart)
+                .call(chart);
+            nv.utils.windowResize(chart.update);
+            return chart;
+        });
+
+
+    }
+});
+
+
+
+_e().createClass("view-demo", {
+    meta : {
+        category : "Application"
+    },     
+    requires : {
+        js : [
+            { url : "https://rawgit.com/terotests/displayList/master/release/displayList-0.05.js?v=2" }
+        ]  
+    },
+    data : {
+
+    },    
+    css : function(base) {
+        
+    },
+    init : function() {
+        
+        var chartDiv = this.div();
+        var debugArea = this.div();
+        chartDiv.width(300).height(300);
+        displayView().ePlugin();
+        
+        var disp = chartDiv.displayView(300, 300, {});
+        disp.on("load",
+            function() {
+                 var theBox = disp.createObject( "box", {
+                    x : 10, y : 10,
+                    bgcolor : "red",
+                    w : 40, h : 40
+                });          
+    
+                var theSmile = disp.createObject( "path", {
+                    x : 70, y : 40,
+                    bgcolor : "blue",
+                    w : 40, h : 40,
+                    scaleFactor : 3,
+                    svgPath : "M16,1.466C7.973,1.466,1.466,7.973,1.466,16c0,8.027,6.507,14.534,14.534,14.534c8.027,0,14.534-6.507,14.534-14.534C30.534,7.973,24.027,1.466,16,1.466zM20.729,7.375c0.934,0,1.688,1.483,1.688,3.312S21.661,14,20.729,14c-0.932,0-1.688-1.483-1.688-3.312S19.798,7.375,20.729,7.375zM11.104,7.375c0.932,0,1.688,1.483,1.688,3.312S12.037,14,11.104,14s-1.688-1.483-1.688-3.312S10.172,7.375,11.104,7.375zM16.021,26c-2.873,0-5.563-1.757-7.879-4.811c2.397,1.564,5.021,2.436,7.774,2.436c2.923,0,5.701-0.98,8.215-2.734C21.766,24.132,18.99,26,16.021,26z"
+                });             
+                
+                var theLinux = disp.createObject( "path", {
+                    x : 60, y : 120,
+                    bgcolor : "orange",
+                    w : 40, h : 40,
+                    scaleFactor : 3,
+                    svgPath : "M11.791,25.229c1.027-0.104,1.162-1.191,0.68-1.666c-0.398-0.392-2.598-2.022-3.171-2.664C9.033,20.6,8.673,20.454,8.52,20.12c-0.352-0.771-0.598-1.869-0.151-2.658c0.081-0.144,0.133-0.078,0.071,0.22c-0.351,1.684,0.746,3.059,0.986,2.354c0.167-0.487,0.013-1.358,0.102-2.051c0.158-1.226,1.273-3.577,1.763-3.712c-0.755-1.398,0.886-2.494,0.866-3.723c-0.014-0.798,0.701,0.982,1.419,1.359c0.802,0.422,1.684-0.794,2.936-1.41c0.354-0.176,0.809-0.376,0.776-0.524c-0.146-0.718-1.644,0.886-2.979,0.939c-0.61,0.024-0.837-0.12-1.072-0.347c-0.712-0.689,0.073-0.115,1.132-0.307c0.471-0.085,0.629-0.163,1.128-0.365c0.5-0.201,1.069-0.5,1.636-0.654c0.395-0.106,0.361-0.402,0.208-0.491c-0.088-0.051-0.219-0.046-0.321,0.133c-0.244,0.419-1.383,0.661-1.74,0.771c-0.457,0.14-0.962,0.271-1.634,0.243c-1.021-0.042-0.782-0.509-1.513-0.928c-0.213-0.122-0.156-0.444,0.129-0.729c0.148-0.148,0.557-0.232,0.76-0.572c0.028-0.047,0.289-0.32,0.494-0.461c0.07-0.049,0.076-1.295-0.562-1.32c-0.543-0.021-0.697,0.398-0.675,0.818c0.022,0.419,0.245,0.765,0.393,0.764c0.285-0.004,0.019,0.311-0.138,0.361c-0.237,0.078-0.562-0.934-0.525-1.418c0.039-0.506,0.303-1.4,0.942-1.383c0.576,0.016,0.993,0.737,0.973,1.983c-0.003,0.211,0.935-0.101,1.247,0.229c0.224,0.236-0.767-2.207,1.438-2.375c0.582,0.111,1.14,0.305,1.371,1.641c-0.086,0.139,0.146,1.07-0.215,1.182c-0.438,0.135-0.707-0.02-0.453-0.438c0.172-0.418,0.004-1.483-0.882-1.42c-0.887,0.064-0.769,1.637-0.526,1.668c0.243,0.031,0.854,0.465,1.282,0.549c1.401,0.271,0.371,1.075,0.555,2.048c0.205,1.099,0.929,0.809,1.578,3.717c0.137,0.177,0.676,0.345,1.199,2.579c0.473,2.011-0.195,3.473,0.938,3.353c0.256-0.026,0.629-0.1,0.792-0.668c0.425-1.489-0.213-3.263-0.855-4.46c-0.375-0.698-0.729-1.174-0.916-1.337c0.738,0.436,1.683,1.829,1.898,2.862c0.286,1.358,0.49,1.934,0.059,3.37c0.25,0.125,0.871,0.39,0.871,0.685c-0.647-0.53-2.629-0.625-2.68,0.646c-0.338,0.008-0.594,0.034-0.811,0.293c-0.797,0.944-0.059,2.842-0.139,3.859c-0.07,0.896-0.318,1.783-0.46,2.683c-0.474-0.019-0.428-0.364-0.274-0.852c0.135-0.431,0.351-0.968,0.365-1.484c0.012-0.467-0.039-0.759-0.156-0.831c-0.118-0.072-0.303,0.074-0.559,0.485c-0.543,0.875-1.722,1.261-2.821,1.397c-1.099,0.138-2.123,0.028-2.664-0.578c-0.186-0.207-0.492,0.058-0.529,0.111c-0.049,0.074,0.18,0.219,0.352,0.533c0.251,0.461,0.49,1.159-0.105,1.479C12.83,26.314,12.316,26.221,11.791,25.229L11.791,25.229zM11.398,25.188c0.395,0.621,1.783,3.232-0.652,3.571c-0.814,0.114-2.125-0.474-3.396-0.784c-1.142-0.279-2.301-0.444-2.949-0.627c-0.391-0.108-0.554-0.25-0.588-0.414c-0.091-0.434,0.474-1.041,0.503-1.555c0.028-0.514-0.188-0.779-0.364-1.199c-0.177-0.42-0.224-0.734-0.081-0.914c0.109-0.141,0.334-0.199,0.698-0.164c0.462,0.047,1.02-0.049,1.319-0.23c0.505-0.309,0.742-0.939,0.516-1.699c0,0.744-0.244,1.025-0.855,1.366c-0.577,0.319-1.467,0.062-1.875,0.416c-0.492,0.427,0.175,1.528,0.12,2.338c-0.042,0.622-0.69,1.322-0.401,1.946c0.291,0.627,1.648,0.695,3.064,0.99c2.012,0.422,3.184,1.153,4.113,1.188c1.356,0.05,1.564-1.342,3.693-1.36c0.621-0.033,1.229-0.052,1.835-0.06c0.688-0.009,1.375-0.003,2.079,0.014c1.417,0.034,0.931,0.773,1.851,1.246c0.774,0.397,2.17,0.241,2.504-0.077c0.451-0.431,1.662-1.467,2.592-1.935c1.156-0.583,3.876-1.588,1.902-2.812c-0.461-0.285-1.547-0.588-1.639-2.676c-0.412,0.366-0.365,2.312,0.784,2.697c1.283,0.431,2.085,1.152-0.301,1.969c-1.58,0.54-1.849,0.706-3.099,1.747c-1.267,1.054-3.145,0.636-2.815-1.582c0.171-1.155,0.269-2.11-0.019-3.114c-0.142-0.49-0.211-1.119-0.114-1.562c0.187-0.858,0.651-1.117,1.106-0.293c0.285,0.519,0.385,1.122,1.408,1.171c1.607,0.077,1.926-1.553,2.439-1.627c0.343-0.05,0.686-1.02,0.425-2.589c-0.28-1.681-1.269-4.332-2.536-5.677c-1.053-1.118-1.717-2.098-2.135-3.497c-0.352-1.175-0.547-2.318-0.475-3.412c0.094-1.417-0.691-3.389-1.943-4.316c-0.782-0.581-2.011-0.893-3.122-0.88c-0.623,0.007-1.21,0.099-1.661,0.343c-1.855,1.008-2.113,2.445-2.086,4.088c0.025,1.543,0.078,3.303,0.254,4.977c-0.208,0.77-1.288,2.227-1.979,3.114C8.59,14.233,8.121,16.01,7.52,17.561c-0.321,0.828-0.862,1.2-0.908,2.265C6.6,20.122,6.61,20.891,6.894,20.672C7.98,19.829,9.343,21.95,11.398,25.188L11.398,25.188zM17.044,2.953c-0.06,0.176-0.3,0.321-0.146,0.443c0.152,0.123,0.24-0.171,0.549-0.281c0.08-0.028,0.449,0.012,0.519-0.164c0.03-0.077-0.19-0.164-0.321-0.291c-0.133-0.125-0.262-0.236-0.386-0.229C16.938,2.451,17.096,2.798,17.044,2.953L17.044,2.953zM18.934,9.35c0.115-0.121,0.174,0.207,0.483,0.402c0.244,0.154,0.481,0.04,0.545,0.354c0.044,0.225-0.097,0.467-0.284,0.436C19.35,10.486,18.596,9.705,18.934,9.35L18.934,9.35zM13.832,7.375c-0.508-0.037-0.543,0.33-0.375,0.324C13.629,7.693,13.523,7.408,13.832,7.375L13.832,7.375zM12.96,6.436c0.06-0.013,0.146,0.09,0.119,0.233c-0.037,0.199-0.021,0.324,0.117,0.325c0.022,0,0.048-0.005,0.056-0.057c0.066-0.396-0.14-0.688-0.225-0.711C12.834,6.178,12.857,6.458,12.96,6.436L12.96,6.436zM16.663,6.268c0.129,0.039,0.253,0.262,0.28,0.504c0.002,0.021,0.168-0.035,0.17-0.088c0.011-0.389-0.321-0.571-0.408-0.562C16.506,6.139,16.562,6.238,16.663,6.268L16.663,6.268zM14.765,7.423c0.463-0.214,0.625,0.118,0.465,0.171C15.066,7.648,15.065,7.345,14.765,7.423L14.765,7.423zM9.178,15.304c-0.219-0.026,0.063-0.19,0.184-0.397c0.131-0.227,0.105-0.511,0.244-0.469s0.061,0.2-0.033,0.461C9.491,15.121,9.258,15.313,9.178,15.304L9.178,15.304z"
+                });                   
+            });
+        // captuer events going to the 
+        disp._dom.addEventListener("click", function(e) {
+            var el = e.srcElement;
+            var dataid = el.getAttribute("data-id");
+            if(dataid) {
+                debugArea.pre().text("Clicked item "+dataid);
+            }
+        }, true);
+    }
+});
+
+
+
+
 _e().createClass("v-menu", {
+    meta : {
+        category : "Menus"
+    },      
   css: function(myCss) {
     myCss.bind(".menuStyle", {
       cursor: "pointer",
       "font-size" : "0.9em"
     })
-    var topHeadColor = _e().mix( "#555", "#333");
+    var topHeadColor = _e().mix( "#555", "#333", 0.4);
     myCss.bind(".menu-top-head", {
       cursor: "pointer",
       "background-color" : topHeadColor,
@@ -1687,6 +2204,29 @@ _e().createClass("v-menu", {
     });
   }
 });
+
+_e().createClass("contentToggle", {
+
+  init: function() {
+    var is_visible = !!this.props().get("visible");
+    var content = this.div();
+    if (is_visible) {
+      content.show();
+    } else {
+      content.hide();
+    }
+    content.toggle = function() {
+      is_visible = !is_visible;
+      if (is_visible) {
+        content.show();
+      } else {
+        content.hide();
+      }
+    }
+    return content;
+  }
+});
+
 ```
 
 

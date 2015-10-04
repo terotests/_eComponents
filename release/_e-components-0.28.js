@@ -1818,6 +1818,11 @@
       /**
        * @param float t
        */
+      _myTrait_.materialize = function (t) {};
+
+      /**
+       * @param float t
+       */
       _myTrait_.ownComps = function (t) {
 
         // Try loading extension
@@ -2187,3 +2192,5 @@
 // any controller preferences?
 
 // any controller preferences?
+
+// "https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.1/css/materialize.min.css"
