@@ -1901,29 +1901,8 @@
           meta: {
             category: "Application"
           },
-          requires: {
-            js: [{
-              url: "https://cdnjs.cloudflare.com/ajax/libs/d3/3.2.2/d3.v3.min.js"
-            }, {
-              url: "https://cdn.rawgit.com/novus/nvd3/v1.8.1/build/nv.d3.js"
-            }],
-            css: [{
-              url: "https://cdn.rawgit.com/novus/nvd3/v1.8.1/build/nv.d3.css"
-            }]
-          },
-          data: {},
-          css: function css(base) {},
-          init: function init() {
-
-            // For latest working examples see:       
-            // SEE: http://nvd3-community.github.io/nvd3/examples/site.html
-
-            var targetDiv = this,
-                mySvg = this.svg({
-              width: 600,
-              height: 400
-            });
-            var historicalBarChart = [{
+          getInitialState: function getInitialState() {
+            return [{
               key: "Cumulative Return",
               values: [{
                 "label": "A",
@@ -1951,6 +1930,30 @@
                 "value": 5.1387322875705
               }]
             }];
+          },
+          requires: {
+            js: [{
+              url: "https://cdnjs.cloudflare.com/ajax/libs/d3/3.2.2/d3.v3.min.js"
+            }, {
+              url: "https://cdn.rawgit.com/novus/nvd3/v1.8.1/build/nv.d3.js"
+            }],
+            css: [{
+              url: "https://cdn.rawgit.com/novus/nvd3/v1.8.1/build/nv.d3.css"
+            }]
+          },
+          data: {},
+          css: function css(base) {},
+          init: function init() {
+
+            // For latest working examples see:       
+            // SEE: http://nvd3-community.github.io/nvd3/examples/site.html
+
+            var targetDiv = this,
+                mySvg = this.svg({
+              width: 600,
+              height: 400
+            });
+            // var historicalBarChart =
             nv.addGraph(function () {
               var chart = nv.models.discreteBarChart().x(function (d) {
                 return d.label;
@@ -1959,7 +1962,7 @@
               }).staggerLabels(true)
               //.staggerLabels(historicalBarChart[0].values.length > 8)
               .showValues(true).duration(250);
-              d3.select(mySvg._dom).datum(historicalBarChart).call(chart);
+              d3.select(mySvg._dom).datum(targetDiv.state().toPlainData()).call(chart);
               nv.utils.windowResize(chart.update);
               return chart;
             });
