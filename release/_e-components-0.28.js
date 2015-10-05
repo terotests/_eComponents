@@ -253,6 +253,9 @@
         }]);
 
         body.customElement("bs-table", {
+          getInitialState: function getInitialState() {
+            return testData.toPlainData();
+          },
           meta: {
             category: "Tables"
           },
@@ -282,7 +285,7 @@
 
             var dataid = this.props().get("dataid");
             if (dataid) {
-              var myData = _data(dataid);
+              var myData = this.state();
               body.mvc(myData, function (row) {
                 var head = _e("tr");
                 if (row.get("label")) {
@@ -1285,7 +1288,6 @@
       if (!_myTrait_.__traitInit) _myTrait_.__traitInit = [];
       _myTrait_.__traitInit.push(function (options) {
         var body = _e(document.body);
-
         options = options || {};
 
         if (options.material) {
