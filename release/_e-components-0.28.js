@@ -935,6 +935,102 @@
        */
       _myTrait_.extras = function (t) {
 
+        _e().createClass("card-big", {
+          meta: {
+            category: "Metadata",
+            description: "Displays full preview of a given component"
+          },
+          data: {
+            name: "alert-info"
+          },
+          css: function css(myCss) {
+            myCss.bind(".comp-preview", {
+              "width": "100%",
+              "display": "inline-block",
+              "padding": "0em",
+              "margin": "1em",
+              "overflow": "hidden",
+              "box-shadow": "0px 4px 16px #444"
+            });
+            myCss.bind(".comp-preview-content", {
+              "padding": "2em" });
+            myCss.bind(".preview-head", {
+              "width": "100%",
+              "padding": "0.5em",
+              "color": "white",
+              "background-color": "#666"
+            });
+            myCss.bind(".close-preview", {
+              "width": "100%",
+              "padding": "1em",
+              "font-size": "0.7em",
+              "color": "#777"
+            });
+            myCss.bind(".close-preview:hover", {
+              "text-decoration": "underline",
+              "color": "orange",
+              "cursor": "pointer"
+            });
+            myCss.bind(".show-toggler", {
+              "width": "100%",
+              "padding-top": "0.6em",
+              "font-size": "0.7em",
+              "color": "#777"
+            });
+            myCss.bind(".show-toggler:hover", {
+              "text-decoration": "underline",
+              "color": "orange",
+              "cursor": "pointer"
+            });
+          },
+          "return": function _return() {
+            this.popView();
+          },
+
+          init: function init() {
+
+            var componentName = this.props().get("title");
+            var me = this;
+
+            var content = this.div("content");
+            return content;
+            /*
+            if (componentName) {
+            this.sendHandler("*", function(msg, res, err, url) {
+            var out = me.ref("handlerOutput");
+            out.clear();
+            out.div().text("message  '"+url+"'");
+            out.pre().text(JSON.stringify(msg));
+            });    
+             this.addClass("comp-preview");
+            this.div("preview-head")
+            .text(componentName).clickTo("return");
+            this.div("close-preview")
+            .text("close").clickTo("return");
+            this.div(function() {
+            this.addClass("comp-preview-content");
+            this.div("handlerOutput", {ref:"handlerOutput"});
+            this.e(componentName);
+                 this.div().text("To create the element use");
+            var initDefs = {};
+            var def = classList[componentName];
+            if (def.data) initDefs = def.data;
+            this.pre().text("_e('" + componentName + "', " + JSON.stringify(initDefs, null, 2) + ")");        
+            this.div("show-toggler").text("show render code").clickTo("show-render");
+            this.div("sourceArea", {
+            ref: "renderCode"
+            });
+            this.div("show-toggler").text("show css code").clickTo("show-css");
+            this.div("sourceArea", {
+            ref: "cssCode"
+            });
+            });
+            } else {
+            this.div().text("Nothing to display");
+            }*/
+          }
+        });
+
         _e().createClass("componentPreviewFull", {
           meta: {
             category: "Metadata",
