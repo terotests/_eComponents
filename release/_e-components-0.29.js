@@ -497,7 +497,7 @@
 
             var model = this.state();
 
-            var model = _data(data.get("dataid"));
+            // var model = _data(data.get("dataid"));
             var level_1 = data.get("firstLevel");
             var level_2 = data.get("secondLevel");
             var default_icon = data.get("defaultIcon");
