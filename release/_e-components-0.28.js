@@ -989,45 +989,14 @@
 
           init: function init() {
 
-            var componentName = this.props().get("title");
             var me = this;
 
-            var content = this.div("content");
+            this.addClass("comp-preview");
+            this.div("preview-head").bind(this.props(), "title").clickTo("return");
+
+            var content = this.div("comp-preview-content");
+
             return content;
-            /*
-            if (componentName) {
-            this.sendHandler("*", function(msg, res, err, url) {
-            var out = me.ref("handlerOutput");
-            out.clear();
-            out.div().text("message  '"+url+"'");
-            out.pre().text(JSON.stringify(msg));
-            });    
-             this.addClass("comp-preview");
-            this.div("preview-head")
-            .text(componentName).clickTo("return");
-            this.div("close-preview")
-            .text("close").clickTo("return");
-            this.div(function() {
-            this.addClass("comp-preview-content");
-            this.div("handlerOutput", {ref:"handlerOutput"});
-            this.e(componentName);
-                 this.div().text("To create the element use");
-            var initDefs = {};
-            var def = classList[componentName];
-            if (def.data) initDefs = def.data;
-            this.pre().text("_e('" + componentName + "', " + JSON.stringify(initDefs, null, 2) + ")");        
-            this.div("show-toggler").text("show render code").clickTo("show-render");
-            this.div("sourceArea", {
-            ref: "renderCode"
-            });
-            this.div("show-toggler").text("show css code").clickTo("show-css");
-            this.div("sourceArea", {
-            ref: "cssCode"
-            });
-            });
-            } else {
-            this.div().text("Nothing to display");
-            }*/
           }
         });
 
