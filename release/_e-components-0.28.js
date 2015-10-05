@@ -957,6 +957,7 @@
             myCss.bind(".preview-head", {
               "width": "100%",
               "padding": "0.5em",
+              "padding-left": "2em",
               "color": "white",
               "background-color": "#666"
             });
