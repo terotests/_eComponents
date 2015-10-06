@@ -1893,6 +1893,9 @@
         // "https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.1/css/materialize.min.css"
 
         _e().createClass("paper-tabs", {
+          meta: {
+            category: "Tabs"
+          },
           requires: {
             css: [{
               url: "https://fonts.googleapis.com/icon?family=Material+Icons"
