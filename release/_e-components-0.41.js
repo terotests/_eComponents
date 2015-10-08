@@ -1097,7 +1097,7 @@
             }
           },
           toggle: function toggle() {
-            this._theContent.toggle();
+            this.send("show-content");
           },
           init: function init() {
 
