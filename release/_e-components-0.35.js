@@ -296,8 +296,7 @@
             category: "Tables"
           },
           data: {
-            titles: "a,b,c,d",
-            dataid: testData.getID()
+            titles: "a,b,c,d"
           },
           init: function init() {
 
@@ -319,24 +318,21 @@
               body.add(head);
             }
 
-            var dataid = this.props().get("dataid");
-            if (dataid) {
-              var myData = this.state();
-              body.mvc(myData, function (row) {
-                var head = _e("tr");
-                if (row.get("label")) {
-                  var th = _e("th");
-                  th.bind(row, "label");
-                  head.add(th);
-                }
-                row.items.forEach(function (cell) {
-                  var td = _e("td");
-                  td.bind(cell, "value");
-                  head.add(td);
-                });
-                return head;
+            var myData = this.state();
+            body.mvc(myData, function (row) {
+              var head = _e("tr");
+              if (row.get("label")) {
+                var th = _e("th");
+                th.bind(row, "label");
+                head.add(th);
+              }
+              row.items.forEach(function (cell) {
+                var td = _e("td");
+                td.bind(cell, "value");
+                head.add(td);
               });
-            }
+              return head;
+            });
           }
         });
 
