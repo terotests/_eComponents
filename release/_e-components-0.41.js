@@ -2347,7 +2347,6 @@
               cont.addClass("enter");
               cont.addClass("_mm_popupwindow");
               cont.on("outclick", function () {
-                over.remove();
                 me.send("closeWindow");
               });
               theContent = cont.e("card-big", {
