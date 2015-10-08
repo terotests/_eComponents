@@ -2216,6 +2216,7 @@
               "left": 0,
               "bottom": 0,
               "right": 0,
+              "text-align": "center",
               "width": "100%",
               "background": "none"
             });
@@ -2248,7 +2249,12 @@
             return this.div().addClass("my-overlay-content");
           }
         });
-
+        /*
+        position: absolute
+        top: 50%
+        left: 50%
+        transform: translate(-50%, -50%)
+        */
         _e().createClass("popWindow", {
           meta: {
             category: "Windows"
@@ -2257,10 +2263,18 @@
             title: "Default popup title"
           },
           css: function css(myCss) {
+
+            myCss.bind(".popupwindow", {
+              "position": "absolute",
+              "width": "200px",
+              "top": "50%",
+              "left": "50%",
+              "transform": "translate(-50%, -50%)",
+              "z-index": 2002
+            });
+
             myCss.bind(".popup-content", {
-              "width": "80%",
-              "margin-left": "auto",
-              "margin-right": "auto",
+              "width": "50%",
               "z-index": 2001
             });
             myCss.animation("enter", {
@@ -2291,12 +2305,13 @@
             var over = this.e("overlay", function () {
               var cont = this.div("popup-content");
               cont.addClass("enter");
+              cont.addClass("popupwindow");
               cont.on("outclick", function () {
                 cont.addClass("leave");
                 cont.addClass("overandout");
                 over.send("hide");
                 setTimeout(function () {
-                  me.remove();
+                  over.remove();
                 }, 400);
               });
               theContent = cont.e("card-big", {
