@@ -2311,7 +2311,7 @@
                 cont.addClass("overandout");
                 over.send("hide");
                 setTimeout(function () {
-                  over.remove();
+                  me.remove();
                 }, 400);
               });
               theContent = cont.e("card-big", {
