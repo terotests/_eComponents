@@ -2265,16 +2265,14 @@
           css: function css(myCss) {
 
             myCss.bind(".popupwindow", {
-              "position": "absolute",
-              "width": "200px",
-              "top": "50%",
-              "left": "50%",
-              "transform": "translate(-50%, -50%)",
+              "margin-left": "auto",
+              "margin-right": "auto",
+              "width": "50%",
               "z-index": 2002
             });
 
             myCss.bind(".popup-content", {
-              "width": "50%",
+              "width": "70%",
               "z-index": 2001
             });
             myCss.animation("enter", {
@@ -2290,10 +2288,10 @@
               duration: "0.6s",
               "iteration-count": 1 }, {
               "opacity": 1,
-              "transform": "scale(1,1)"
+              "transform": "scale(1,1) rotate(0deg)"
             }, {
               "opacity": 0,
-              "transform": "scale(0,0)"
+              "transform": "scale(0,0) rotate(360deg)"
             });
             myCss.bind("overandout", {
               display: "none"
