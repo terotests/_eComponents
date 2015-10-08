@@ -1017,6 +1017,7 @@
               "fa-file-pdf-o": ["pdf"],
               "fa-file-audio-o": ["wav", "mp3"],
               "fa-file-movie-o": ["mp4", "mov"],
+              "fa-file-photo-o": ["png", "jpg", "jpeg", "gif", "tiff"],
               "fa-file-powerpoint-o": ["ppt", "pptx", "pps", "pptm", "ppsx", "ppsm", "sldx", "sldm"]
             };
             this.addClass("fileTn");
