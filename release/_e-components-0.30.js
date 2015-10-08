@@ -752,6 +752,26 @@
         }]);
 
         body.customElement("tabs", {
+          getInitialState: function getInitialState() {
+            return [{
+              text: "tab1",
+              action: "tab-selected",
+              data: "tab1"
+            }, {
+              text: "tab2",
+              action: "tab-selected",
+              data: "tab2"
+            }, {
+              text: "tab3",
+              active: true,
+              action: "tab-selected",
+              data: "tab3"
+            }, {
+              text: "tab4",
+              action: "tab-selected",
+              data: "tab4"
+            }];
+          },
           meta: {
             category: "Tabs"
           },
@@ -939,6 +959,74 @@
        * @param float t
        */
       _myTrait_.extras = function (t) {
+        _e().createClass("contentToggle", {
+
+          toggle: function toggle() {
+            this.__content.toggle();
+          },
+          init: function init() {
+
+            var is_visible = !!this.props().get("visible");
+            var content = this.div();
+            if (is_visible) {
+              content.show();
+            } else {
+              content.hide();
+            }
+            content.toggle = function () {
+              is_visible = !is_visible;
+              if (is_visible) {
+                content.show();
+              } else {
+                content.hide();
+              }
+            };
+            this.__content = content;
+            return content;
+          }
+        });
+
+        _e().createClass("HiddenContent", {
+          meta: {
+            category: "Panels",
+            description: "Toggles content visible / hidden"
+          },
+          data: {
+            title: "Show content"
+          },
+          css: function css(myCss) {
+            myCss.bind(".show-toggler", {
+              "width": "100%",
+              "padding-top": "0.6em",
+              "font-size": "0.7em",
+              "color": "#777"
+            });
+            myCss.bind(".show-toggler:hover", {
+              "text-decoration": "underline",
+              "color": "orange",
+              "cursor": "pointer"
+            });
+          },
+          "show-content": function showContent() {
+            this._theContent.send("toggle");
+            if (this.props().get("title")) ;
+            if (this._header.text() == this._tClosed) {
+              this._header.text(this._tOpen);
+            } else {
+              this._header.text(this._tClosed);
+            }
+          },
+          init: function init() {
+
+            this._tClosed = this.props().get("title");
+            this._tOpen = this.props().get("title_open");
+            this._header = this.div("show-toggler").text(this._tClosed).clickTo("show-content");
+
+            this._theContent = this.e("contentToggle");
+
+            return this._theContent;
+          }
+        });
 
         _e().createClass("card-big", {
           meta: {
@@ -1029,7 +1117,7 @@
               "width": "100%",
               "padding": "0.5em",
               "color": "white",
-              "background-color": "#666"
+              "background-color": _e().mix("#666", "skyblue")
             });
             myCss.bind(".close-preview", {
               "width": "100%",
@@ -1119,15 +1207,36 @@
                 if (def.data) initDefs = def.data;
                 this.pre().text("_e('" + componentName + "', " + JSON.stringify(initDefs, null, 2) + ")");
 
-                this.div("show-toggler").text("show render code").clickTo("show-render");
-                this.div("sourceArea", {
-                  ref: "renderCode"
+                this.e("HiddenContent", {
+                  title: "Show Renderer",
+                  title_open: "Hide"
+                }, function () {
+                  var fn = def.render || def.init;
+                  if (fn) {
+                    this.pre().text(fn.toString());
+                  }
                 });
+                this.e("HiddenContent", {
+                  title: "Show CSS",
+                  title_open: "Hide"
+                }, function () {
+                  var fn = def.css;
+                  if (fn) {
+                    this.pre().text(fn.toString());
+                  }
+                });
+                if (def.getInitialState) {
+                  this.e("HiddenContent", {
+                    title: "Show getInitialState",
+                    title_open: "Hide"
+                  }, function () {
+                    var fn = def.getInitialState;
+                    if (fn) {
+                      this.pre().text(fn.toString());
+                    }
+                  });
+                }
 
-                this.div("show-toggler").text("show css code").clickTo("show-css");
-                this.div("sourceArea", {
-                  ref: "cssCode"
-                });
                 /*
                 this.h3().text("render function");
                 var comp = classList[componentName];
@@ -1138,7 +1247,7 @@
                 */
               });
             } else {
-              this.div().text("Nothing to display");
+              this.div().text("Nothing to display!!!");
             }
           }
         });
