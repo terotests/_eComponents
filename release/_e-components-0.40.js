@@ -2293,11 +2293,11 @@
               "z-index": 2003,
               "top": "25%",
               "left": "25%",
-              "bottom": 0,
+              "right": "25%",
               "width": "50%"
             });
             myCss.bind(".popup-content", {
-              "width": "70%",
+              "width": "50%",
               "z-index": 2001
             });
             myCss.animation("enter", {
