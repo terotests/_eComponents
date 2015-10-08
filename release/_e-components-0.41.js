@@ -2335,7 +2335,6 @@
             this.__over.send("hide");
             setTimeout(function () {
               me.remove();
-              over.remove();
             }, 400);
           },
           init: function init() {
