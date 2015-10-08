@@ -2294,6 +2294,7 @@
               "top": "25%",
               "left": "25%",
               "right": "25%",
+              "bottom": "25%",
               "width": "50%"
             });
             myCss.bind(".popup-content", {
