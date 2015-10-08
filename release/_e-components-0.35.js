@@ -2185,7 +2185,7 @@
               cont.width(this.props().get("width"));
               this.__over.width(this.props().get("width"));
             }
-            this.__over.on("outclick", function () {
+            this.__content.on("outclick", function () {
               this.send("hide");
             });
             return this.__content;
