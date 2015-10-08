@@ -2187,6 +2187,9 @@
               cont.width(this.props().get("width"));
               this.__over.width(this.props().get("width"));
             }
+            this.__over.on("outclick", function () {
+              this.send("hide");
+            });
             return this.__content;
           }
         });
@@ -2421,6 +2424,7 @@
             }]
           },
           init: function init() {
+            this.div().text("NOTE: does not work right now correctly, because of new ACE protocol, must fix");
             var editorArea = this.div().width("100%").height(400);
             var me = this;
 
