@@ -1096,6 +1096,9 @@
               this._header.text(this._tClosed);
             }
           },
+          toggle: function toggle() {
+            this._theContent.toggle();
+          },
           init: function init() {
 
             this._tClosed = this.props().get("title");
