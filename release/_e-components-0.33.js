@@ -1130,7 +1130,9 @@
               "box-shadow": "0px 4px 16px #444"
             });
             myCss.bind(".comp-preview-content", {
-              "padding": "2em" });
+              "padding": "2em",
+              "background": "#fff"
+            });
             myCss.bind(".preview-head", {
               "width": "100%",
               "padding": "0.5em",
@@ -2258,7 +2260,8 @@
             myCss.bind(".popup-content", {
               "width": "80%",
               "margin-left": "auto",
-              "margin-right": "auto"
+              "margin-right": "auto",
+              "z-index": 2001
             });
             myCss.animation("enter", {
               duration: "0.6s",
