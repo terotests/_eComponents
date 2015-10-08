@@ -2291,7 +2291,7 @@
             css().bind("._mm_popupwindow", {
               "position": "fixed",
               "z-index": 2003,
-              "top": "25%",
+              "top": "10%",
               "left": "25%",
               "right": "25%",
               "bottom": "25%",
