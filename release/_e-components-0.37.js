@@ -2269,9 +2269,19 @@
           data: {
             title: "Default popup title"
           },
-          css: function css(myCss) {
+          css: (function (_css) {
+            function css(_x) {
+              return _css.apply(this, arguments);
+            }
 
-            myCss.bind(".popupwindow", {
+            css.toString = function () {
+              return _css.toString();
+            };
+
+            return css;
+          })(function (myCss) {
+
+            css().bind("._mm_popupwindow", {
               "margin-left": "auto",
               "margin-right": "auto",
               "width": "50%",
@@ -2303,7 +2313,7 @@
             myCss.bind("overandout", {
               display: "none"
             });
-          },
+          }),
           closeWindow: function closeWindow() {
             var me = this,
                 cont = me.__content;
@@ -2318,13 +2328,15 @@
           init: function init() {
             var me = this;
             var theContent;
-            var over = this.e("overlay", function () {
+            var body = _e(document.body);
+            var over = body.e("overlay", function () {
               var cont = this.div("popup-content");
               me.__content = cont;
               cont.addClass("enter");
-              cont.addClass("popupwindow");
+              cont.addClass("_mm_popupwindow");
               cont.on("outclick", function () {
-                this.send("closeWindow");
+                over.remove();
+                me.send("closeWindow");
               });
               theContent = cont.e("card-big", {
                 title: me.props().get("title")
@@ -2728,12 +2740,12 @@
             // menu has this helper function
             this.pushToPath = function (path, itemData) {
               var parts = path.split("/");
-              var find_or_insert_item = function find_or_insert_item(_x, _x2) {
+              var find_or_insert_item = function find_or_insert_item(_x2, _x3) {
                 var _again = true;
 
                 _function: while (_again) {
-                  var index = _x,
-                      from = _x2;
+                  var index = _x2,
+                      from = _x3;
                   name = did_find = undefined;
                   _again = false;
 
@@ -2757,8 +2769,8 @@
 
                     return did_find;
                   } else {
-                    _x = index + 1;
-                    _x2 = did_find;
+                    _x2 = index + 1;
+                    _x3 = did_find;
                     _again = true;
                     continue _function;
                   }
