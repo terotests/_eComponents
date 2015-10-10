@@ -2543,7 +2543,8 @@
           },
           data: {
             debounce: 1000,
-            localStorageName: "last_ace_edit"
+            localStorageName: "last_ace_edit",
+            height: 400
           },
           getInitialState: function getInitialState() {
             return {
@@ -2552,6 +2553,10 @@
           },
           requires: {
             js: [{
+              url: "https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.25/browser-polyfill.min.js"
+            }, {
+              url: "https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.25/browser.js"
+            }, {
               url: "https://cdnjs.cloudflare.com/ajax/libs/ace/1.1.1/ace.js"
             }, {
               url: "https://cdnjs.cloudflare.com/ajax/libs/ace/1.1.1/mode-html.js"
@@ -2567,21 +2572,26 @@
           },
           init: function init() {
             var _lsName = this.props().get("localStorageName");
-            var editorArea = this.div().width("100%").height(400);
+            var editorArea = this.div().width("100%").height(this.props().get("height"));
             var me = this;
 
             var editor = ace.edit(editorArea._dom);
-            editor.setValue(this.model().get("code"));;
+
             editor.setTheme("ace/theme/github");
             editor.getSession().setMode("ace/mode/javascript");
             editorArea._editor = editor;
+
+            if (this.props().get("readOnly")) {
+              editor.setReadOnly(true);
+            }
 
             var varName = "code";
             var dObj = this.model();
 
             if (!dObj.get(varName) && _lsName && typeof localStorage != "undefined") {
-              this.state().set("code", localStorage[_lsName] || "");
+              this.state().set(varName, localStorage[_lsName] || "");
             }
+            editor.setValue(this.model().get("code"));;
 
             editor.getSession().on("change", function (e) {
 
@@ -2618,6 +2628,12 @@
                 doc.applyDeltas(aceList);
                 editor._noUpdates = false;
               });
+              dObj.on(varName, function (o, v) {
+                if (editor._noUpdates) return;
+                editor._noUpdates = true;
+                editor.setValue(v);
+                editor._noUpdates = false;
+              });
             } catch (e) {
               console.error(e.message);
             }
@@ -2639,8 +2655,7 @@
 
             this._editor = editor;
             this._container = editorArea;
-
-            this.div().pre().bind(this.model(), "code");
+            // this.div().pre().bind( this.model(), "code");
           }
         });
 
