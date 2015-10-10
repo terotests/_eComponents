@@ -2451,6 +2451,93 @@
        */
       _myTrait_.ownComps = function (t) {
 
+        // A generic controller test
+        _e().createClass("CKEdit", {
+          data: {
+            width: 300,
+            height: 300,
+            itemCnt: 200,
+            localStorageName: "last_ck_edit"
+          },
+          meta: {
+            category: "TextEdit"
+          },
+          getInitialState: function getInitialState() {
+            return {
+              html: ""
+            };
+          },
+          css: function css(c) {
+            c.bind(".taStart", {
+              "border": "0px solid white",
+              "background": "none"
+            });
+          },
+          requires: {
+            js: [{
+              url: "//cdn.ckeditor.com/4.5.4/standard/ckeditor.js" }, {
+              url: "https://cdnjs.cloudflare.com/ajax/libs/bacon.js/0.7.75/Bacon.min.js"
+            }, {
+              url: "https://cdnjs.cloudflare.com/ajax/libs/diff_match_patch/20121119/diff_match_patch.js"
+            }]
+          },
+
+          // The Scene Setup starts here...
+          init: function init() {
+
+            CKEDITOR.config.enterMode = CKEDITOR.ENTER_BR;
+            this.addClass("row");
+
+            var _rendTime = this.div(),
+                _id = "ta" + this.guid() + "area",
+                _tools = this.div("toolArea"),
+                _container = this.div(),
+                _timerDiv = this.div(),
+                _diffRes = this.div(),
+                _lsName = this.props().get("localStorageName"),
+                _textArea = _container.textarea({
+              id: _id
+            }).width("100%");
+            _textArea.addClass("taStart");
+            // myData.set("html", localStorage["ck_value"]);
+            // **
+            this.width("100%");
+            this.height(300);
+
+            if (_lsName && typeof localStorage != "undefined") {
+              this.state().set("html", localStorage[_lsName] || "");
+            }
+
+            var me = this;
+
+            _textArea._dom.style.height = "0px";
+
+            setTimeout(function () {
+              CKEDITOR.replace(_textArea._dom);
+              CKEDITOR.instances[_id].setData(me.state().get("html"));
+
+              var docStream = Bacon.fromBinder(function (sink) {
+                var ins = CKEDITOR.instances[_id];
+                ins.on("change", function () {
+                  sink(ins.getData());
+                });
+              });
+
+              // -- might be saving only differentials though...
+
+              docStream.debounce(1000).onValue(function (value) {
+                me.state().set("html", value);
+                if (_lsName && typeof localStorage != "undefined") {
+                  localStorage[_lsName] = value;
+                }
+                me.send("new_editor_value", value);
+              });
+            }, 500);
+
+            return _tools;
+          }
+        });
+
         // Try loading extension
         // https://rawgit.com/terotests/displayList/master/release/displayList-0.04.js?v=2
 
