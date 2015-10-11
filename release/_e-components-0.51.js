@@ -761,9 +761,9 @@
         };
 
         create_bs_btn(body, "primary");
-        create_bs_btn(body, "panger");
-        create_bs_btn(body, "parning");
-        create_bs_btn(body, "pefault");
+        create_bs_btn(body, "danger");
+        create_bs_btn(body, "warning");
+        create_bs_btn(body, "default");
 
         var tabsDemoData = _data([{
           text: "tab1",
