@@ -1063,7 +1063,7 @@
           }
         });
 
-        _e().createClass("hiddenContent", {
+        _e().createClass("HiddenContent", {
           meta: {
             category: "Panels",
             description: "Toggles content visible / hidden"
