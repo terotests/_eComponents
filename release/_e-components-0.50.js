@@ -382,7 +382,7 @@
             var model = _data(data.get("dataid"));
             var popper;
             var is_open = false;
-            var btn = this.e("btn-default", {
+            var btn = this.e("btnDefault", {
               text: model.get("text") || "Dropdown",
               icon: model.get("icon") || "circle-arrow-down"
             }).on("click", function () {
@@ -539,7 +539,7 @@
             var didAll = false;
 
             var tools = this.div("tools", function () {
-              this.e("btn-default").text("Valitse kaikki").on("click", function () {
+              this.e("btnDefault").text("Valitse kaikki").on("click", function () {
 
                 var cnt = 0,
                     total = 0;
@@ -568,13 +568,13 @@
                   didAll = true;
                 }
               });
-              this.e("btn-default", {
+              this.e("btnDefault", {
                 icon: "fast-backward",
                 text: "Peruuta"
               }).on("click", function () {
                 model.undoStep();
               });
-              this.e("btn-default", {
+              this.e("btnDefault", {
                 icon: "fast-forward",
                 text: "Uudelleen"
               }).on("click", function () {
@@ -603,7 +603,7 @@
                 item.set("selected", false);
               }
               if (level > 1) {
-                heading.e("bs-checkbox", {
+                heading.e("bsCheckbox", {
                   dataid: item.getID(),
                   varName: "selected"
                 });
@@ -918,7 +918,7 @@
             var level_2 = data.get("secondLevel");
 
             var didAll = false;
-            this.e("btn-default").text("Valitse kaikki").on("click", function () {
+            this.e("btnDefault").text("Valitse kaikki").on("click", function () {
 
               var cnt = 0,
                   total = 0;
@@ -956,7 +956,7 @@
                 item.set("selected", false);
               }
               if (level > 1) {
-                o.e("bs-checkbox", {
+                o.e("bsCheckbox", {
                   dataid: item.getID(),
                   varName: "selected"
                 });
@@ -1390,7 +1390,7 @@
           init: function init() {
             var classList = this.getRegisteredClasses();
             var me = this;
-            this.e("paper-h1", {
+            this.e("paperH1", {
               text: "Currently registered components"
             });
             Object.keys(classList).forEach(function (n) {
@@ -1414,7 +1414,7 @@
           init: function init() {
             var classList = this.getRegisteredClasses();
             var me = this;
-            var menu = this.e("v-menu", {
+            var menu = this.e("vMenu", {
               dataid: _data({
                 items: []
               }).getID()
@@ -1521,7 +1521,7 @@
           },
           init: function init() {
             var me = this;
-            var markDown = this.e("paper-textarea", {
+            var markDown = this.e("paperTextarea", {
               title: "Write markdown here",
               value: "# Marked in browser\n\nRendered by **marked**."
             }).height(300);
@@ -1773,7 +1773,7 @@
               this.addClass("btn-content");
               var theText = this.span().bind(data, "text");
               this.on("click", function () {
-                this.e("paper-circle");
+                this.e("paperCircle");
                 var act = this.props().get("action"),
                     data = this.props().get("data");
                 if (act) this.send(act, data);
@@ -1928,19 +1928,19 @@
             },
             css: function css(myCss) {},
             init: function init(data) {
-              this.e("paper-input", {
+              this.e("paperInput", {
                 title: [data, "to_title"],
                 value: [data, "to"]
               });
-              this.e("paper-input", {
+              this.e("paperInput", {
                 title: [data, "head_title"],
                 value: [data, "heading"]
               });
-              this.e("paper-textarea", {
+              this.e("paperTextarea", {
                 title: [data, "content_title"],
                 value: [data, "content"]
               });
-              this.e("paper-button", {
+              this.e("paperButton", {
                 text: [data, "send_title"]
               }).on("click", function () {
                 this.send("send-email", data.toPlainData(), function () {});
@@ -1976,7 +1976,7 @@
                   var info = _e();
                   info.p().text(item.text());
                   var b_visible = false;
-                  li.e("paper-h2", {
+                  li.e("paperH2", {
                     text: item.heading()
                   }).on("click", function () {
                     if (!b_visible) {
@@ -2022,32 +2022,32 @@
 
               var alert = this.div("alert-area");
 
-              this.e("paper-textarea", {
+              this.e("paperTextarea", {
                 title: [data, "content_title"],
                 height: "5em",
                 value: [data, "content"]
               });
 
-              this.e("paper-input", {
+              this.e("paperInput", {
                 type: "email",
                 required: true,
                 title: [data, "from_title"],
                 value: [data, "from"]
               });
 
-              this.e("paper-button", {
+              this.e("paperButton", {
                 text: [data, "send_title"]
               }).on("click", function () {
                 if (!data.get("from")) {
                   alert.clear();
-                  alert.e("alert-info", {
+                  alert.e("alertInfo", {
                     text: data.get("please_fill_email")
                   });
                   return;
                 }
                 if (!validateEmail(data.get("from"))) {
                   alert.clear();
-                  alert.e("alert-info", {
+                  alert.e("alertInfo", {
                     text: data.get("please_check_email")
                   });
                   return;
@@ -2056,10 +2056,10 @@
               });
 
               if (data.get("faqid")) {
-                this.e("paper-h1", {
+                this.e("paperH1", {
                   text: "Usein kysyttyjä kysymyksiä"
                 });
-                this.e("faq-list", {
+                this.e("faqList", {
                   dataid: data.get("faqid")
                 });
               }
