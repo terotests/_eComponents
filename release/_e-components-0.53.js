@@ -1135,7 +1135,7 @@
               "padding": "0.5em",
               "padding-left": "2em",
               "color": "white",
-              "background-color": "#666"
+              "background-color": "rgb(119, 154, 169)"
             });
             myCss.bind(".close-preview", {
               "width": "100%",
