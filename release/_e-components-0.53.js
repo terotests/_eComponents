@@ -1073,7 +1073,7 @@
             title: "Link title"
           },
           css: function css(myCss) {
-            myCss.bind(".show-toggler", {
+            myCss.bind("div.show-toggler", {
               "padding-left": "0.6em",
               "padding-right": "0.6em",
               "font-size": "0.9em",
@@ -1083,7 +1083,7 @@
               "border-radius": "4px",
               "display": "inline-block"
             });
-            myCss.bind(".show-toggler:hover", {
+            myCss.bind("div.show-toggler:hover", {
               "text-decoration": "underline",
               "color": "orange",
               "cursor": "pointer"
