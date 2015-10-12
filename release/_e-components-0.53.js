@@ -1069,12 +1069,19 @@
             category: "Links",
             description: "Small action link"
           },
+          data: {
+            title: "Link title"
+          },
           css: function css(myCss) {
             myCss.bind(".show-toggler", {
-              "width": "100%",
-              "padding-top": "0.6em",
-              "font-size": "1em",
-              "color": "#777"
+              "padding-left": "0.6em",
+              "padding-right": "0.6em",
+              "font-size": "1.2em",
+              "color": "#777",
+              "background-color": "#eee",
+              "padding": "0.3em",
+              "border-radius": "4px",
+              "display": "inline-block"
             });
             myCss.bind(".show-toggler:hover", {
               "text-decoration": "underline",
@@ -1087,6 +1094,7 @@
           },
           init: function init() {
             this.addClass("show-toggler");
+            this.bind(this.props(), "title");
           }
         });
 
