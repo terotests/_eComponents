@@ -1076,9 +1076,9 @@
             myCss.bind(".show-toggler", {
               "padding-left": "0.6em",
               "padding-right": "0.6em",
-              "font-size": "1.2em",
-              "color": "#777",
-              "background-color": "#eee",
+              "font-size": "0.9em",
+              "color": "#eee",
+              "background-color": "#479",
               "padding": "0.3em",
               "border-radius": "4px",
               "display": "inline-block"
