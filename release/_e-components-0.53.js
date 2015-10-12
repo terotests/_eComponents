@@ -1078,8 +1078,8 @@
               "padding-left": "0.6em",
               "padding-right": "0.6em",
               "font-size": "0.9em",
-              "color": "#eee",
-              "background-color": "#479",
+              "color": "blue",
+              "background-color": "none",
               "padding": "0.4em",
               "border-radius": "4px",
               "display": "inline-block"
