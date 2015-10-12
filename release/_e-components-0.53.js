@@ -1064,6 +1064,32 @@
           }
         });
 
+        _e().createClass("actionLink", {
+          meta: {
+            category: "Links",
+            description: "Small action link"
+          },
+          css: function css(myCss) {
+            myCss.bind(".show-toggler", {
+              "width": "100%",
+              "padding-top": "0.6em",
+              "font-size": "1em",
+              "color": "#777"
+            });
+            myCss.bind(".show-toggler:hover", {
+              "text-decoration": "underline",
+              "color": "orange",
+              "cursor": "pointer"
+            });
+            myCss.bind("div", {
+              display: "inline-block"
+            });
+          },
+          init: function init() {
+            this.addClass("show-toggler");
+          }
+        });
+
         _e().createClass("HiddenContent", {
           meta: {
             category: "Panels",
