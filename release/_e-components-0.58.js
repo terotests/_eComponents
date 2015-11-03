@@ -3356,7 +3356,10 @@
   if (typeof define !== "undefined" && define !== null && define.amd != null) {
     define(__amdDefs__);
   }
-  _eComponents();
+  _eComponents({
+    material: true,
+    bootstrap: true
+  });
 }).call(new Function("return this")());
 
 //var o = this.buttonGroup(item.buttongroup);
